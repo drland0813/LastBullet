@@ -41,7 +41,6 @@ namespace LastBullet
                     : _firePoint.forward;
 
                 Vector3 origin = _firePoint != null ? _firePoint.position : transform.position;
-
                 _currentWeapon.Fire(origin, aimDirection);
             }
             else

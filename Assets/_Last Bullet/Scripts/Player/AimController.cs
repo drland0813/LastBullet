@@ -26,7 +26,7 @@ namespace LastBullet
                 return toTarget.normalized;
             }
 
-            return transform.forward;
+            return transform.forward * 10f;
         }
 
         private Transform FindNearestEnemy()

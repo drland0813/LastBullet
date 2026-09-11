@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4bea9dbcd2838bf4599e847ba8825b4d, type: 3}
-  m_Name: G001
+  m_Name: G002
   m_EditorClassIdentifier: 
-  Id: G001
-  Name: Gun001
+  Id: G002
+  Name: AK
   Icon: {fileID: 0}
-  Damage: 10
+  Damage: 20
   FireRate: 20
   MagazineSize: 30
   Range: 10

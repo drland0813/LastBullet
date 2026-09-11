@@ -7,6 +7,13 @@ namespace LastBullet
         public void Execute(Vector3 origin, Vector3 direction, GunDataSO data,
                             ObjectPool<BulletProjectile> pool, float damage, GameObject hitImpactPrefab)
         {
+            if (pool == null)
+            {
+                Debug.LogError("[SingleShootStrategy] Pool is null. Make sure the data asset has a " +
+                               "BulletPrefab that is registered in the BulletObjectPoolManager.");
+                return;
+            }
+
             Vector3 spreadDirection = ApplySpread(direction, data.Spread);
 
             BulletProjectile bullet = pool.Get();

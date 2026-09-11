@@ -4,7 +4,7 @@ namespace LastBullet
 {
     public class ShotgunWeapon : WeaponBase
     {
-        private IShootStrategy _shootStrategy;
+        private IHitscanStrategy _shootStrategy;
 
         protected override void Awake()
         {
@@ -13,21 +13,19 @@ namespace LastBullet
             ShotgunDataSO shotgunData = _data as ShotgunDataSO;
             if (shotgunData != null)
             {
-                _shootStrategy = new SpreadShootStrategy(shotgunData.PelletCount,
-                                                         shotgunData.SpreadAngle);
+                _shootStrategy = new HitscanSpreadShootStrategy(shotgunData.PelletCount,
+                                                                shotgunData.SpreadAngle);
             }
             else
             {
                 Debug.LogError($"[ShotgunWeapon] {name}: data must be ShotgunDataSO!", this);
-                _shootStrategy = new SpreadShootStrategy(8, 15f);
+                _shootStrategy = new HitscanSpreadShootStrategy(8, 15f);
             }
         }
 
-        protected override void ShootInternal(Vector3 origin, Vector3 direction,
-                                              ObjectPool<BulletProjectile> pool)
+        protected override void ShootInternal(Vector3 origin, Vector3 direction)
         {
-            _shootStrategy.Execute(origin, direction, _data, pool,
-                                   _data.Damage, _data.HitImpactPrefab);
+            _shootStrategy.Execute(origin, direction, _data, gameObject);
         }
     }
 }

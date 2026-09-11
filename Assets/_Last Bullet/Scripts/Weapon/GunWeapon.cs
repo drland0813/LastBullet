@@ -4,19 +4,17 @@ namespace LastBullet
 {
     public class GunWeapon : WeaponBase
     {
-        private IShootStrategy _shootStrategy;
+        private IHitscanStrategy _shootStrategy;
 
         protected override void Awake()
         {
             base.Awake();
-            _shootStrategy = new SingleShootStrategy();
+            _shootStrategy = new HitscanShootStrategy();
         }
 
-        protected override void ShootInternal(Vector3 origin, Vector3 direction,
-                                              ObjectPool<BulletProjectile> pool)
+        protected override void ShootInternal(Vector3 origin, Vector3 direction)
         {
-            _shootStrategy.Execute(origin, direction, _data, pool,
-                                   _data.Damage, _data.HitImpactPrefab);
+            _shootStrategy.Execute(origin, direction, _data, gameObject);
         }
     }
 }

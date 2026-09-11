@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace LastBullet
@@ -12,7 +13,9 @@ namespace LastBullet
 
         [Header("Fire Point")]
         [SerializeField] private Transform _muzzlePoint;
-
+        
+        [SerializeField] private ParticleSystem _muzzleFlashVFX;
+        
         public WeaponDataBase Data => _data;
         public bool CanFire => _currentAmmo > 0 && !_isReloading && Time.time >= _nextFireTime;
         public bool IsReloading => _isReloading;
@@ -30,29 +33,31 @@ namespace LastBullet
         private Coroutine _reloadCoroutine;
 
         private AudioSource _audioSource;
-        private ObjectPool<BulletProjectile> _bulletPool;
-        private GameObject _poolRoot;
-
+        protected ObjectPool<BulletProjectile> _bulletPool;
+        protected ObjectPool<MuzzleFlash> _muzzleFlashPool;
         protected virtual void Awake()
         {
             _audioSource = GetComponent<AudioSource>();
-            _currentAmmo = _data.MagazineSize;
-            InitBulletPool();
+
+            if (_data != null)
+            {
+                _currentAmmo = _data.MagazineSize;
+            }
         }
 
-        private void InitBulletPool()
+        private void Start()
         {
-            if (_data.BulletPrefab == null) return;
+            if (_data == null)
+            {
+                Debug.LogError($"[WeaponBase] {name}: No GunDataSO assigned to _data!", this);
+                return;
+            }
 
-            _poolRoot = new GameObject($"[Pool] {_data.Name} Bullets");
-            Debug.Log($"Init: [Pool] {_data.Name} Bullets");
-            _poolRoot.transform.SetParent(transform);
-            _poolRoot.transform.localPosition = Vector3.zero;
-
-            BulletProjectile bulletProjectile = Instantiate(_data.BulletPrefab, _poolRoot.transform);
-            bulletProjectile.gameObject.SetActive(false);
-
-            _bulletPool = new ObjectPool<BulletProjectile>(bulletProjectile);
+            // Only projectile weapons (e.g. grenade launcher) need a bullet pool.
+            if (_data.BulletPrefab != null)
+            {
+                _bulletPool = BulletObjectPoolManager.Instance.GetBulletPool(_data.BulletPrefab);
+            }
         }
 
         public void Fire(Vector3 origin, Vector3 direction)
@@ -75,7 +80,7 @@ namespace LastBullet
 
             SpawnMuzzleFlash();
             PlaySound(_data.FireSound);
-            ShootInternal(origin, direction, _bulletPool);
+            ShootInternal(origin, direction);
 
             OnFirePerformed?.Invoke();
             OnAmmoChanged?.Invoke(_currentAmmo, _data.MagazineSize);
@@ -85,6 +90,7 @@ namespace LastBullet
                 Reload();
             }
         }
+
         public void ReleaseFire()
         {
             _fireInputHeld = false;
@@ -113,8 +119,7 @@ namespace LastBullet
             gameObject.SetActive(false);
         }
 
-        protected abstract void ShootInternal(Vector3 origin, Vector3 direction,
-                                              ObjectPool<BulletProjectile> pool);
+        protected abstract void ShootInternal(Vector3 origin, Vector3 direction);
 
         private IEnumerator ReloadCoroutine()
         {
@@ -135,10 +140,13 @@ namespace LastBullet
         {
             if (_data.MuzzleFlashPrefab == null || _muzzlePoint == null) return;
 
-            GameObject flash = Instantiate(_data.MuzzleFlashPrefab,
-                                           _muzzlePoint.position,
-                                           _muzzlePoint.rotation);
-            Destroy(flash, 0.1f);
+            _muzzleFlashPool = BulletObjectPoolManager.Instance.GetMuzzleFlashPool();
+            var flash = _muzzleFlashPool.Get();
+            flash.SetPool(_muzzleFlashPool);
+            flash.transform.position = GetMuzzlePosition();
+            flash.transform.SetParent(_muzzlePoint.transform, true);
+            // GameObject flash = Instantiate(_data.MuzzleFlashPrefab, _muzzlePoint);
+            // Destroy(flash, 0.1f);
         }
 
         private void PlaySound(AudioClip clip)
@@ -150,6 +158,13 @@ namespace LastBullet
         protected Vector3 GetMuzzlePosition()
         {
             return _muzzlePoint != null ? _muzzlePoint.position : transform.position;
+        }
+
+        private void EnableMuzzleFlash()
+        {
+            if (_muzzleFlashVFX == null) return;
+            _muzzleFlashVFX.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            _muzzleFlashVFX.Play(true);
         }
     }
 }

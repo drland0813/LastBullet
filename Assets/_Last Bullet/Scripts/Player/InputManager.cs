@@ -10,6 +10,8 @@ namespace LastBullet
 
         protected override void Awake()
         {
+            Application.targetFrameRate = 60;
+            Input.multiTouchEnabled = true;
             base.Awake();
 
             if (_playerInputs == null)
