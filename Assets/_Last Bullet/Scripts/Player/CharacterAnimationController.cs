@@ -15,6 +15,8 @@ namespace LastBullet
         [Header("IK")]
         [SerializeField] private Transform _leftHandTarget;
         [SerializeField] private Rig _weaponRig;
+        [Header("Firing")]
+        [SerializeField] private float _fireAnimationDuration = 0.25f;
         private static readonly int ParamWeaponType  = Animator.StringToHash("WeaponType");
         private static readonly int ParamIsFiring    = Animator.StringToHash("IsFiring");
 
@@ -22,22 +24,18 @@ namespace LastBullet
         
         private bool _isArmed = false;
         private bool _fireSequenceActive;
+        private Coroutine _fireSequenceCoroutine;
         private InputManager _inputManager;
         private void Start()
         {
             _weaponController.OnFireStarted += TriggerFire;
+            _weaponController.OnFiringModeEnded += StopFireAnimation;
             _inputManager = InputManager.Instance;
         }
 
 
         void Update()
         {
-            if (_isArmed && _weaponController.CurrentWeapon != null &&
-                _weaponController.ForceFiring && !_fireSequenceActive)
-            {
-                TriggerFire();
-            }
-            
             if (Input.GetKeyDown(KeyCode.E))
                 EquipWeapon(1, null); 
 
@@ -62,6 +60,7 @@ namespace LastBullet
         public void UnequipWeapon()
         {
             _isArmed = false;
+            StopFireAnimation();
             _animator.runtimeAnimatorController = _baseController;
     
             _weaponController.UnequipCurrentWeapon();
@@ -99,7 +98,7 @@ namespace LastBullet
         {
             if (_fireSequenceActive) return;
 
-            StartCoroutine(FireSequence());
+            _fireSequenceCoroutine = StartCoroutine(FireSequence());
         }
 
         private IEnumerator FireSequence()
@@ -107,10 +106,14 @@ namespace LastBullet
             _fireSequenceActive = true;
             StartCoroutine(FadeLayerWeight(2, 1f, 0.05f));
             _animator.SetBool(ParamIsFiring, true);
-            
-            // _weaponController.CanFire = false;
-            yield return new WaitUntil(() =>
-                !InputManager.Instance.PlayerInputs.fire && !_weaponController.ForceFiring);
+
+            yield return new WaitForSeconds(_fireAnimationDuration);
+
+            while (_weaponController.IsFiringMode)
+            {
+                yield return null;
+            }
+
             _animator.SetBool(ParamIsFiring, false);
             
             // _weaponController.CanFire = true;
@@ -119,6 +122,20 @@ namespace LastBullet
             // yield return new WaitForSeconds(clipLength * 0.3f);
             //
             StartCoroutine(FadeLayerWeight(2, 0f, 0.1f));
+            _fireSequenceActive = false;
+            _fireSequenceCoroutine = null;
+        }
+
+        private void StopFireAnimation()
+        {
+            if (_fireSequenceCoroutine != null)
+            {
+                StopCoroutine(_fireSequenceCoroutine);
+                _fireSequenceCoroutine = null;
+            }
+
+            _animator.SetBool(ParamIsFiring, false);
+            _animator.SetLayerWeight(2, 0f);
             _fireSequenceActive = false;
         }
 

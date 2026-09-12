@@ -30,6 +30,7 @@ namespace LastBullet
         [Header("Testing")]
         [SerializeField] private bool _forceFiring;
         [SerializeField] private float _aimTransitionDuration = 0.05f;
+        [SerializeField] private float _firstShotDelay = 0.1f;
         public bool ForceFiring
         {
             get => _forceFiring;
@@ -40,10 +41,15 @@ namespace LastBullet
         private IWeapon _currentWeapon;
         private Transform _currentWeaponTransform;
         private bool _isFiring = false;
+        private bool _isFiringMode;
+        private bool _wasFirePressed;
+        private Coroutine _firstShotCoroutine;
         
         public Action OnFirePerformed;
         public Action OnFireStarted;
+        public Action OnFiringModeEnded;
         public WeaponBase CurrentWeapon => _currentWeapon as WeaponBase;
+        public bool IsFiringMode => _isFiringMode;
 
         private void Start()
         {
@@ -67,31 +73,41 @@ namespace LastBullet
 
         private void HandleFire()
         {
-            bool isFiring = _input.fire || ForceFiring;
-            bool wasFiring = _isFiring;
-            _isFiring = isFiring;
+            bool firePressed = _input.fire || ForceFiring;
+            bool movementStarted = _input.move.sqrMagnitude > 0.0001f;
 
-            if (isFiring && !wasFiring)
+            if (movementStarted)
             {
-                OnFireStarted?.Invoke();
+                ExitFiringMode();
             }
 
-            if (isFiring)
+            bool fireStarted = firePressed && !_wasFirePressed;
+            if (fireStarted)
             {
-                UpdateWeaponTransform();
-                Vector3 aimDirection = _aimController != null
-                    ? _aimController.GetAimDirection()
-                    : _firePoint.forward;
-
-                Vector3 origin = _firePoint != null ? _firePoint.position : transform.position;
-                _currentWeapon.Fire(origin, aimDirection);
+                if (!_isFiringMode)
+                {
+                    EnterFiringMode();
+                    StartFirstShotDelay();
+                }
+                else
+                {
+                    FireCurrentWeapon();
+                }
             }
-            else
+
+            if (firePressed && _isFiringMode && _firstShotCoroutine == null)
             {
-                ApplyWeaponPose(_equipPos, false);
-                
+                FireCurrentWeapon();
+            }
+
+            if (!firePressed)
+            {
                 _currentWeapon.ReleaseFire();
             }
+
+            _wasFirePressed = firePressed;
+            _isFiring = _isFiringMode;
+            UpdateWeaponTransform();
         }
 
         private void HandleReload()
@@ -143,6 +159,9 @@ namespace LastBullet
         {
             if (_currentWeapon == newWeapon) return;
 
+            ExitFiringMode();
+            _wasFirePressed = false;
+
             if (_currentWeapon != null)
             {
                 _currentWeapon.OnAmmoChanged -= HandleAmmoChanged;
@@ -177,6 +196,7 @@ namespace LastBullet
             _currentWeapon.OnReloadFinished -= HandleReloadFinished;
 
             _currentWeapon.OnUnequip();
+            ExitFiringMode();
             Destroy(_currentWeaponTransform.gameObject);
             _currentWeapon = null;
             _currentWeaponTransform = null;
@@ -194,6 +214,56 @@ namespace LastBullet
             OnFirePerformed?.Invoke();
         }
 
+        private void EnterFiringMode()
+        {
+            _isFiringMode = true;
+            OnFireStarted?.Invoke();
+        }
+
+        private void ExitFiringMode()
+        {
+            if (!_isFiringMode) return;
+
+            if (_firstShotCoroutine != null)
+            {
+                StopCoroutine(_firstShotCoroutine);
+                _firstShotCoroutine = null;
+            }
+
+            _isFiringMode = false;
+            _currentWeapon?.ReleaseFire();
+            OnFiringModeEnded?.Invoke();
+        }
+
+        private void StartFirstShotDelay()
+        {
+            if (_firstShotCoroutine != null) return;
+            _firstShotCoroutine = StartCoroutine(FirstShotCoroutine());
+        }
+
+        private System.Collections.IEnumerator FirstShotCoroutine()
+        {
+            yield return new WaitForSeconds(_firstShotDelay);
+            _firstShotCoroutine = null;
+
+            if (_isFiringMode)
+            {
+                FireCurrentWeapon();
+            }
+        }
+
+        private void FireCurrentWeapon()
+        {
+            if (!_isFiringMode || _currentWeapon == null) return;
+
+            UpdateWeaponTransform();
+            Vector3 aimDirection = _aimController != null
+                ? _aimController.GetAimDirection()
+                : _firePoint.forward;
+            Vector3 origin = _firePoint != null ? _firePoint.position : transform.position;
+            _currentWeapon.Fire(origin, aimDirection);
+        }
+
         private void HandleReloadStarted()
         {
             Debug.Log("[WeaponController] Reloading...");
@@ -207,7 +277,7 @@ namespace LastBullet
         private void UpdateWeaponTransform()
         {
 
-            if (_isFiring)
+            if (_isFiringMode)
             {
                 ApplyWeaponPose(_aimPos, true);
                 _leftHandIKPos = _currentWeapon.GetLeftHandTransform();
@@ -233,7 +303,18 @@ namespace LastBullet
 
             if (_currentWeaponTransform.parent != socket)
             {
-                _currentWeaponTransform.SetParent(socket, true);
+                _currentWeaponTransform.SetParent(socket, false);
+                _currentWeaponTransform.localPosition = Vector3.zero;
+                _currentWeaponTransform.localRotation = Quaternion.identity;
+            }
+
+            if (aiming)
+            {
+                _currentWeaponTransform.localPosition = Vector3.zero;
+                _currentWeaponTransform.localRotation = Quaternion.identity;
+                _leftHandIKConstraint.weight = 1f;
+                _rightHandIKConstraint.weight = 1f;
+                return;
             }
 
             float transition = _aimTransitionDuration > 0f
