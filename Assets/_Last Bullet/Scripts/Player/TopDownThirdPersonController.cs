@@ -168,6 +168,20 @@ namespace LastBullet
 
 		private void Move()
 		{
+			if (_input.fire)
+			{
+				_speed = 0.0f;
+				_animationBlend = Mathf.Lerp(_animationBlend, 0.0f, Time.deltaTime * SpeedChangeRate);
+				if (_hasAnimator)
+				{
+					_animator.SetFloat(_animIDSpeed, _animationBlend);
+					_animator.SetFloat(_animIDMotionSpeed, 0.0f);
+				}
+
+				_controller.Move(new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+				return;
+			}
+
 			// set target speed based on move speed, sprint speed and if sprint is pressed
 			float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
 

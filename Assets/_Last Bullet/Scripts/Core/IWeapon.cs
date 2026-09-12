@@ -15,10 +15,13 @@ namespace LastBullet
         void Reload();
         void OnEquip();
         void OnUnequip();
-
+        Transform GetTransform();
+        Transform GetLeftHandTransform();
+        Transform GetRightHandTransform();
         event Action<int, int> OnAmmoChanged;
         event Action OnFirePerformed;
         event Action OnReloadStarted;
         event Action OnReloadFinished;
+        Transform GetFirePoint();
     }
 }

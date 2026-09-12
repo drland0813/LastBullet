@@ -6,18 +6,18 @@ AnimatorOverrideController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Rifle_AnimOverride
+  m_Name: Pistol_AnimOverride
   m_Controller: {fileID: 9100000, guid: 035023331dbb59f40832fd4d54e4957e, type: 2}
   m_Clips:
-  - m_OriginalClip: {fileID: -3100369314251171874, guid: 12e52e465ed793a4d801955e9f964a82,
+  - m_OriginalClip: {fileID: -203655887218126122, guid: 0fb01786b775d4246b4e26634ceb2fa8,
       type: 3}
-    m_OverrideClip: {fileID: -203655887218126122, guid: e35d281ac8c9b944dafe94e55373f56f,
+    m_OverrideClip: {fileID: 6564411413370888346, guid: 16114d403eabb53438de032c6f0d1deb,
       type: 3}
-  - m_OriginalClip: {fileID: 6564411413370888346, guid: 16114d403eabb53438de032c6f0d1deb,
+  - m_OriginalClip: {fileID: -203655887218126122, guid: e35d281ac8c9b944dafe94e55373f56f,
       type: 3}
-    m_OverrideClip: {fileID: -203655887218126122, guid: 0fb01786b775d4246b4e26634ceb2fa8,
+    m_OverrideClip: {fileID: -3100369314251171874, guid: 12e52e465ed793a4d801955e9f964a82,
       type: 3}
   - m_OriginalClip: {fileID: -203655887218126122, guid: edc5d3c2ee7044546962e540fbe8c113,
       type: 3}
-    m_OverrideClip: {fileID: -203655887218126122, guid: edc5d3c2ee7044546962e540fbe8c113,
+    m_OverrideClip: {fileID: -203655887218126122, guid: bda80f72cfdcc2943aac3ff4a25c10e9,
       type: 3}

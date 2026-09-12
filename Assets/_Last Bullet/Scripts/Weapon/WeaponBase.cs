@@ -11,20 +11,57 @@ namespace LastBullet
         [Header("Weapon Data")]
         [SerializeField] protected GunDataSO _data;
 
+        [Header("Character Animation")]
+        [SerializeField] private AnimatorOverrideController _animationOverride;
+
+        [Header("Character Socket Pose")]
+        [SerializeField] private Vector3 _equipLocalPosition;
+        [SerializeField] private Vector3 _equipLocalEulerAngles;
+        [SerializeField] private Vector3 _aimLocalPosition;
+        [SerializeField] private Vector3 _aimLocalEulerAngles;
+
         [Header("Fire Point")]
         [SerializeField] private Transform _muzzlePoint;
         
         [SerializeField] private ParticleSystem _muzzleFlashVFX;
-        
+
+        [Header("Rigging")] 
+        [SerializeField] private Transform _leftHandPos;
+        [SerializeField] private Transform _rightHandPos;
+        [SerializeField] private GunRecoilMotion  _recoilMotion;
         public WeaponDataBase Data => _data;
+        public AnimatorOverrideController AnimationOverride => _animationOverride;
+        public Vector3 EquipLocalPosition => _equipLocalPosition;
+        public Quaternion EquipLocalRotation => Quaternion.Euler(_equipLocalEulerAngles);
+        public Vector3 AimLocalPosition => _aimLocalPosition;
+        public Quaternion AimLocalRotation => Quaternion.Euler(_aimLocalEulerAngles);
         public bool CanFire => _currentAmmo > 0 && !_isReloading && Time.time >= _nextFireTime;
         public bool IsReloading => _isReloading;
         public int CurrentAmmo => _currentAmmo;
+
+        public Transform GetTransform()
+        {
+            return transform;
+        }
+
+        public Transform GetLeftHandTransform()
+        {
+            return _leftHandPos;
+        }
+
+        public Transform GetRightHandTransform()
+        {
+            return _rightHandPos;
+        }
 
         public event Action<int, int> OnAmmoChanged;
         public event Action OnFirePerformed;
         public event Action OnReloadStarted;
         public event Action OnReloadFinished;
+        public Transform GetFirePoint()
+        {
+            return _muzzlePoint;
+        }
 
         private int _currentAmmo;
         private bool _isReloading;
@@ -81,7 +118,7 @@ namespace LastBullet
             SpawnMuzzleFlash();
             PlaySound(_data.FireSound);
             ShootInternal(origin, direction);
-
+            _recoilMotion.Play();
             OnFirePerformed?.Invoke();
             OnAmmoChanged?.Invoke(_currentAmmo, _data.MagazineSize);
 

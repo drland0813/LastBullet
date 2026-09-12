@@ -16,8 +16,8 @@ MonoBehaviour:
   Name: Gun001
   Icon: {fileID: 0}
   Damage: 10
-  FireRate: 20
-  MagazineSize: 30
+  FireRate: 1
+  MagazineSize: 15
   Range: 10
   MuzzleFlashPrefab: {fileID: 100006, guid: b85a6b62efd46f247926d8401b3b5742, type: 3}
   HitImpactPrefab: {fileID: 100002, guid: 399d10d553e79044d8256a827301b56f, type: 3}
@@ -33,5 +33,5 @@ MonoBehaviour:
     type: 3}
   TracerLifetime: 0.2
   ReloadTime: 1
-  Spread: 5
+  Spread: 1
   FireMode: 1
