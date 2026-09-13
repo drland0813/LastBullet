@@ -26,11 +26,24 @@ namespace LastBullet
         private bool _fireSequenceActive;
         private Coroutine _fireSequenceCoroutine;
         private InputManager _inputManager;
+
+        private void Awake()
+        {
+        }
+
         private void Start()
         {
             _weaponController.OnFireStarted += TriggerFire;
             _weaponController.OnFiringModeEnded += StopFireAnimation;
             _inputManager = InputManager.Instance;
+        }
+
+        private void OnDestroy()
+        {
+            if (_weaponController == null) return;
+
+            _weaponController.OnFireStarted -= TriggerFire;
+            _weaponController.OnFiringModeEnded -= StopFireAnimation;
         }
 
 
@@ -155,4 +168,5 @@ namespace LastBullet
             _animator.SetLayerWeight(layer, target);
         }
     }
+
 }

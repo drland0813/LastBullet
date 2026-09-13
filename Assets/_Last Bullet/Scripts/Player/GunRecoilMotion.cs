@@ -4,6 +4,9 @@ namespace LastBullet
 {
     public class GunRecoilMotion : MonoBehaviour
     {
+        [Header("Target")]
+        [SerializeField] private Transform _recoilTarget;
+
         [Header("Recoil")]
         [SerializeField] private float _recoilDistance = 0.05f;
         [SerializeField] private float _recoilAngle = 5f;
@@ -15,10 +18,12 @@ namespace LastBullet
 
         private float _recoilAmount;
 
+        private Transform RecoilTarget => _recoilTarget != null ? _recoilTarget : transform;
+
         private void Awake()
         {
-            _initialLocalPosition = transform.localPosition;
-            _initialLocalRotation = transform.localRotation;
+            _initialLocalPosition = RecoilTarget.localPosition;
+            _initialLocalRotation = RecoilTarget.localRotation;
         }
 
         private void LateUpdate()
@@ -35,11 +40,11 @@ namespace LastBullet
                 _returnSpeed * Time.deltaTime
             );
 
-            transform.localPosition =
+            RecoilTarget.localPosition =
                 _initialLocalPosition +
                 Vector3.back * (_recoilDistance * _recoilAmount);
 
-            transform.localRotation =
+            RecoilTarget.localRotation =
                 _initialLocalRotation *
                 Quaternion.Euler(
                     -_recoilAngle * _recoilAmount,
@@ -50,8 +55,8 @@ namespace LastBullet
 
         public void Play()
         {
-            _initialLocalPosition = transform.localPosition;
-            _initialLocalRotation = transform.localRotation;
+            _initialLocalPosition = RecoilTarget.localPosition;
+            _initialLocalRotation = RecoilTarget.localRotation;
             _recoilAmount = Mathf.Min(_recoilAmount + 1f, 1.5f);
         }
 
@@ -59,8 +64,8 @@ namespace LastBullet
         {
             _recoilAmount = 0f;
 
-            transform.localPosition = _initialLocalPosition;
-            transform.localRotation = _initialLocalRotation;
+            RecoilTarget.localPosition = _initialLocalPosition;
+            RecoilTarget.localRotation = _initialLocalRotation;
         }
     }
 }
