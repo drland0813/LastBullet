@@ -394,7 +394,7 @@ AnimatorController:
   - serializedVersion: 5
     m_Name: Upper_Armed
     m_StateMachine: {fileID: -1546045730271648970}
-    m_Mask: {fileID: 31900000, guid: b44db9efac2ba9f4f985edfb39caf07a, type: 2}
+    m_Mask: {fileID: 0}
     m_Motions: []
     m_Behaviours: []
     m_BlendingMode: 0

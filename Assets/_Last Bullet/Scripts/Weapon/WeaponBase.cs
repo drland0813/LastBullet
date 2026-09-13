@@ -24,6 +24,7 @@ namespace LastBullet
         [SerializeField] private Transform _muzzlePoint;
         
         [SerializeField] private ParticleSystem _muzzleFlashVFX;
+        [SerializeField] private ParticleSystem _casingBullet;
 
         [Header("Rigging")] 
         [SerializeField] private Transform _leftHandPos;
@@ -121,6 +122,7 @@ namespace LastBullet
             SpawnMuzzleFlash();
             PlaySound(_data.FireSound);
             ShootInternal(origin, direction);
+            _casingBullet?.Emit(1);
             _recoilMotion.Play();
             OnFirePerformed?.Invoke();
             OnAmmoChanged?.Invoke(_currentAmmo, _data.MagazineSize);

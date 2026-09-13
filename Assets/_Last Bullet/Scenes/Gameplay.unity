@@ -1229,7 +1229,7 @@ MonoBehaviour:
   _aimController: {fileID: 694612746}
   _weaponDatabase: {fileID: 11400000, guid: 143b2474181d46740be6e49f4132d858, type: 2}
   _startingWeapon: {fileID: 2095613643}
-  _startingWeaponId: G001
+  _startingWeaponId: G002
   _equipPos: {fileID: 6504460443736870252}
   _aimPos: {fileID: 1586981424561863361}
   _leftHandIKConstraint: {fileID: 777699105}
@@ -3808,6 +3808,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3058826150791192806, guid: ac8332b71da9da041bfcf9de79c03876,
+        type: 3}
+      propertyPath: lengthInSec
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3058826150791192806, guid: ac8332b71da9da041bfcf9de79c03876,
+        type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 3058826150791192806, guid: ac8332b71da9da041bfcf9de79c03876,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 1.2
+      objectReference: {fileID: 0}
     - target: {fileID: 8358430139285408284, guid: ac8332b71da9da041bfcf9de79c03876,
         type: 3}
       propertyPath: m_Name
@@ -5562,7 +5577,7 @@ PrefabInstance:
     - target: {fileID: 5013250201319840141, guid: 9f3fe0b6aa7083548b9c651415cae9a6,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1.308
       objectReference: {fileID: 0}
     - target: {fileID: 5013250201319840141, guid: 9f3fe0b6aa7083548b9c651415cae9a6,
         type: 3}
@@ -5608,11 +5623,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Rifle
-      objectReference: {fileID: 0}
-    - target: {fileID: 5887196873893529214, guid: 9f3fe0b6aa7083548b9c651415cae9a6,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
