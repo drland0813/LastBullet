@@ -63,6 +63,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3456145292102946207}
   m_LocalEulerAnglesHint: {x: 80.527, y: -52.144, z: -133.971}
+--- !u!1 &2450443311027965478
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8096014318171175186}
+  m_Layer: 0
+  m_Name: Muzzle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8096014318171175186
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2450443311027965478}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4692734150610588797}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1 &2964064846836386200
 GameObject:
   m_ObjectHideFlags: 0
@@ -91,7 +122,8 @@ Transform:
   m_LocalPosition: {x: -0.024, y: 0.409, z: 2.44}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 8096014318171175186}
   m_Father: {fileID: 3456145292102946207}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4342768737067184061
@@ -138,7 +170,7 @@ GameObject:
   - component: {fileID: 8627266962127738268}
   - component: {fileID: 6705471756813867475}
   m_Layer: 0
-  m_Name: Rifle
+  m_Name: AK
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -274,11 +306,16 @@ MonoBehaviour:
   _equipLocalEulerAngles: {x: -7.733, y: -255.507, z: -246.35}
   _aimLocalPosition: {x: -0.006, y: 1.284, z: 0.382}
   _aimLocalEulerAngles: {x: 2.386, y: 2.4, z: 6.172}
-  _muzzlePoint: {fileID: 4692734150610588797}
+  _muzzlePoint: {fileID: 8096014318171175186}
   _muzzleFlashVFX: {fileID: 0}
   _leftHandPos: {fileID: 6944165057946729238}
   _rightHandPos: {fileID: 2526401748337627009}
   _recoilMotion: {fileID: 6705471756813867475}
+  _bodyRecoil:
+    _impulse: 1
+    _recoilAngle: 5
+    _returnSpeed: 15
+    _maxAmount: 1.5
 --- !u!114 &6705471756813867475
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -291,7 +328,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6ba768c82654964944c64f9e09194b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _recoilDistance: 0.05
+  _recoilTarget: {fileID: 6732220009528536209}
+  _recoilDistance: 0.1
   _recoilAngle: 5
   _recoilSpeed: 25
   _returnSpeed: 15

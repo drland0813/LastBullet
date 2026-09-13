@@ -55,9 +55,7 @@ namespace LastBullet
 
         public void Play()
         {
-            _initialLocalPosition = RecoilTarget.localPosition;
-            _initialLocalRotation = RecoilTarget.localRotation;
-            _recoilAmount = Mathf.Min(_recoilAmount + 1f, 1.5f);
+            _recoilAmount = 1f;
         }
 
         public void ResetMotion()

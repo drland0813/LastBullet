@@ -293,7 +293,7 @@ AnimatorStateMachine:
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 50, y: 20, z: 0}
   m_EntryPosition: {x: 50, y: 120, z: 0}
-  m_ExitPosition: {x: 800, y: 120, z: 0}
+  m_ExitPosition: {x: 720, y: -30, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 9201514502973048248}
 --- !u!1101 &-1241942381204629156
@@ -376,7 +376,7 @@ AnimatorController:
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
-    m_DefaultBool: 0
+    m_DefaultBool: 1
     m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
@@ -394,7 +394,7 @@ AnimatorController:
   - serializedVersion: 5
     m_Name: Upper_Armed
     m_StateMachine: {fileID: -1546045730271648970}
-    m_Mask: {fileID: 0}
+    m_Mask: {fileID: 31900000, guid: b44db9efac2ba9f4f985edfb39caf07a, type: 2}
     m_Motions: []
     m_Behaviours: []
     m_BlendingMode: 0
@@ -595,7 +595,7 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 8394414609301348019}
-    m_Position: {x: 290, y: 250, z: 0}
+    m_Position: {x: 250, y: 280, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
