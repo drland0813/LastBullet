@@ -103,16 +103,26 @@ namespace LastBullet
         {
             if (tracerPrefab == null || lifetime <= 0f) return;
 
-            GameObject tracerObject = Object.Instantiate(tracerPrefab);
-            BulletTracer tracer = tracerObject.GetComponent<BulletTracer>();
-            if (tracer == null)
-            {
-                Object.Destroy(tracerObject);
-                return;
-            }
+            BulletTracer tracerObject = GetPooledTracer(tracerPrefab);
+            if (tracerObject == null) return;
 
-            tracer.Show(from, to, lifetime);
-            Object.Destroy(tracerObject, lifetime);
+            tracerObject.gameObject.SetActive(true);
+            tracerObject.Show(from, to, lifetime);
         }
+
+        private BulletTracer GetPooledTracer(GameObject tracerPrefab)
+        {
+            BulletTracer tracerPrefabComponent = tracerPrefab.GetComponent<BulletTracer>();
+            if (tracerPrefabComponent == null) return null;
+
+            ObjectPool<BulletTracer> bulletPool =
+                BulletObjectPoolManager.Instance.GetBulletPool(tracerPrefabComponent);
+            if (bulletPool == null) return null;
+
+            var tracer = bulletPool.GetInactive();
+            tracer.SetPool(bulletPool);
+            return tracer;
+        }
+
     }
 }

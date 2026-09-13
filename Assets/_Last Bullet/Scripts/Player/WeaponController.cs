@@ -24,12 +24,13 @@ namespace LastBullet
         [SerializeField] private Transform _rightHandTarget;
         [SerializeField] private Transform _leftHandIKPos;
         [SerializeField] private Transform _rightHandIKPos;
+        [Header("Body Recoil")]
+        [SerializeField] private PlayerBodyRecoil _bodyRecoil;
         private Transform _firePoint;
         public bool CanFire;
 
         [Header("Testing")]
         [SerializeField] private bool _forceFiring;
-        [SerializeField] private float _aimTransitionDuration = 0.05f;
         [SerializeField] private float _firstShotDelay = 0.1f;
         public bool ForceFiring
         {
@@ -43,7 +44,21 @@ namespace LastBullet
         private bool _isFiring = false;
         private bool _isFiringMode;
         private bool _wasFirePressed;
+        private bool _weaponPoseDirty = true;
         private Coroutine _firstShotCoroutine;
+
+        private void Awake()
+        {
+            if (_bodyRecoil == null)
+            {
+                _bodyRecoil = GetComponentInChildren<PlayerBodyRecoil>(true);
+            }
+
+            if (_bodyRecoil == null)
+            {
+                Debug.LogWarning("[WeaponController] PlayerBodyRecoil is not assigned and was not found in children.", this);
+            }
+        }
         
         public Action OnFirePerformed;
         public Action OnFireStarted;
@@ -107,7 +122,17 @@ namespace LastBullet
 
             _wasFirePressed = firePressed;
             _isFiring = _isFiringMode;
-            UpdateWeaponTransform();
+
+            if (_weaponPoseDirty)
+            {
+                UpdateWeaponTransform();
+                _weaponPoseDirty = false;
+            }
+
+            if (_isFiringMode)
+            {
+                UpdateHandIKTargets();
+            }
         }
 
         private void HandleReload()
@@ -157,7 +182,7 @@ namespace LastBullet
 
         public void EquipWeapon(WeaponBase newWeapon)
         {
-            if (_currentWeapon == newWeapon) return;
+            if (CurrentWeapon == newWeapon) return;
 
             ExitFiringMode();
             _wasFirePressed = false;
@@ -183,7 +208,9 @@ namespace LastBullet
             _currentWeaponTransform = _currentWeapon.GetTransform();
 
             ApplyWeaponSocketPoses();
+            _weaponPoseDirty = true;
             UpdateWeaponTransform();
+            _weaponPoseDirty = false;
         }
 
         public void UnequipCurrentWeapon()
@@ -196,6 +223,7 @@ namespace LastBullet
             _currentWeapon.OnReloadFinished -= HandleReloadFinished;
 
             _currentWeapon.OnUnequip();
+            _bodyRecoil?.ResetMotion();
             ExitFiringMode();
             Destroy(_currentWeaponTransform.gameObject);
             _currentWeapon = null;
@@ -211,12 +239,18 @@ namespace LastBullet
 
         private void HandleWeaponFirePerformed()
         {
+            if (CurrentWeapon != null)
+            {
+                _bodyRecoil?.Play(CurrentWeapon.BodyRecoil);
+            }
+
             OnFirePerformed?.Invoke();
         }
 
         private void EnterFiringMode()
         {
             _isFiringMode = true;
+            _weaponPoseDirty = true;
             OnFireStarted?.Invoke();
         }
 
@@ -231,6 +265,7 @@ namespace LastBullet
             }
 
             _isFiringMode = false;
+            _weaponPoseDirty = true;
             _currentWeapon?.ReleaseFire();
             OnFiringModeEnded?.Invoke();
         }
@@ -256,7 +291,6 @@ namespace LastBullet
         {
             if (!_isFiringMode || _currentWeapon == null) return;
 
-            UpdateWeaponTransform();
             Vector3 aimDirection = _aimController != null
                 ? _aimController.GetAimDirection()
                 : _firePoint.forward;
@@ -280,13 +314,6 @@ namespace LastBullet
             if (_isFiringMode)
             {
                 ApplyWeaponPose(_aimPos, true);
-                _leftHandIKPos = _currentWeapon.GetLeftHandTransform();
-                _rightHandIKPos = _currentWeapon.GetRightHandTransform();
-                _leftHandTarget.position = _leftHandIKPos.position;
-                _leftHandTarget.rotation = _leftHandIKPos.rotation;
-
-                _rightHandTarget.position = _rightHandIKPos.position;
-                _rightHandTarget.rotation = _rightHandIKPos.rotation;
             }
             else
             {
@@ -295,6 +322,26 @@ namespace LastBullet
             }
 
 
+        }
+
+        private void UpdateHandIKTargets()
+        {
+            if (_currentWeapon == null) return;
+
+            _leftHandIKPos = _currentWeapon.GetLeftHandTransform();
+            _rightHandIKPos = _currentWeapon.GetRightHandTransform();
+
+            if (_leftHandIKPos != null && _leftHandTarget != null)
+            {
+                _leftHandTarget.position = _leftHandIKPos.position;
+                _leftHandTarget.rotation = _leftHandIKPos.rotation;
+            }
+
+            if (_rightHandIKPos != null && _rightHandTarget != null)
+            {
+                _rightHandTarget.position = _rightHandIKPos.position;
+                _rightHandTarget.rotation = _rightHandIKPos.rotation;
+            }
         }
 
         private void ApplyWeaponPose(Transform socket, bool aiming)
@@ -317,20 +364,10 @@ namespace LastBullet
                 return;
             }
 
-            float transition = _aimTransitionDuration > 0f
-                ? Time.deltaTime / _aimTransitionDuration
-                : 1f;
-            _currentWeaponTransform.localPosition = Vector3.Lerp(
-                _currentWeaponTransform.localPosition, Vector3.zero, transition);
-            _currentWeaponTransform.localRotation = Quaternion.Slerp(
-                _currentWeaponTransform.localRotation, Quaternion.identity, transition);
-
-            float ikWeight = Mathf.MoveTowards(
-                _leftHandIKConstraint.weight,
-                aiming ? 1f : 0f,
-                transition);
-            _leftHandIKConstraint.weight = ikWeight;
-            _rightHandIKConstraint.weight = ikWeight;
+            _currentWeaponTransform.localPosition = Vector3.zero;
+            _currentWeaponTransform.localRotation = Quaternion.identity;
+            _leftHandIKConstraint.weight = 0f;
+            _rightHandIKConstraint.weight = 0f;
         }
 
         private void ApplyWeaponSocketPoses()

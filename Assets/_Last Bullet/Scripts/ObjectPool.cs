@@ -14,16 +14,26 @@ public class ObjectPool<T> where T : Component
 
     public T Get()
     {
+        return GetElement(true);
+    }
+
+    public T GetInactive()
+    {
+        return GetElement(false);
+    }
+
+    private T GetElement(bool activate)
+    {
         if (_poolElements.Count == 0)
         {
-            var newElement = Object.Instantiate(_sample, _sample.transform.parent);
-            newElement.gameObject.SetActive(true);
+            T newElement = Object.Instantiate(_sample, _sample.transform.parent);
+            newElement.gameObject.SetActive(activate);
             return newElement;
         }
 
-        var element = _poolElements[0];
-        element.gameObject.SetActive(true);
+        T element = _poolElements[0];
         _poolElements.RemoveAt(0);
+        element.gameObject.SetActive(activate);
         return element;
     }
 

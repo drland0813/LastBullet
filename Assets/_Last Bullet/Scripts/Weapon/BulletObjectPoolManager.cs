@@ -6,13 +6,12 @@ namespace LastBullet
     public class BulletObjectPoolManager : Singleton<BulletObjectPoolManager>
     {
         [Header("Bullet Samples")]
-        [SerializeField] private List<BulletProjectile> _bulletSamples = new();
-
+        [SerializeField] private List<BulletTracer> _bulletSamples = new();
         [SerializeField] private MuzzleFlash _muzzlePrefab;
         private ObjectPool<MuzzleFlash> _muzzlePool;
-        private readonly Dictionary<string, ObjectPool<BulletProjectile>> _pools = new();
+        private readonly Dictionary<string, ObjectPool<BulletTracer>> _pools = new();
         private readonly Dictionary<string, Transform> _poolRoots = new();
-        private ObjectPool<BulletProjectile> _gunProjectilePool;
+        private ObjectPool<BulletTracer> _gunProjectilePool;
 
         protected override void Awake()
         {
@@ -22,7 +21,7 @@ namespace LastBullet
 
         private void InitAllPools()
         {
-            foreach (BulletProjectile sample in _bulletSamples)
+            foreach (BulletTracer sample in _bulletSamples)
             {
                 if (sample == null) continue;
 
@@ -33,7 +32,7 @@ namespace LastBullet
                     Debug.LogWarning($"[BulletObjectPoolManager] Duplicate sample name: '{key}'. Skipping.", this);
                     continue;
                 }
-                ObjectPool<BulletProjectile> pool = new ObjectPool<BulletProjectile>(sample);
+                ObjectPool<BulletTracer> pool = new ObjectPool<BulletTracer>(sample);
                 Debug.Log($"Init pool: {key}");
                 _pools.Add(key, pool);
                 _poolRoots.Add(key, transform);
@@ -41,9 +40,9 @@ namespace LastBullet
             _muzzlePool = new ObjectPool<MuzzleFlash>(_muzzlePrefab);
         }
 
-        public ObjectPool<BulletProjectile> GetBulletPool(string bulletName)
+        public ObjectPool<BulletTracer> GetBulletPool(string bulletName)
         {
-            if (_pools.TryGetValue(bulletName, out ObjectPool<BulletProjectile> pool))
+            if (_pools.TryGetValue(bulletName, out ObjectPool<BulletTracer> pool))
             {
                 return pool;
             }
@@ -52,7 +51,7 @@ namespace LastBullet
                            $"Make sure it's added to the Bullet Samples list.", this);
             return null;
         }
-        public ObjectPool<BulletProjectile> GetBulletPool(BulletProjectile bulletPrefab)
+        public ObjectPool<BulletTracer> GetBulletPool(BulletTracer bulletPrefab)
         {
             if (bulletPrefab == null)
             {

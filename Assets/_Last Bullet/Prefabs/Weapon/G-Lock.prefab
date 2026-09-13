@@ -208,9 +208,41 @@ Transform:
   m_LocalPosition: {x: -0.006, y: 0.409, z: 0.508}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1644046679661782882}
   m_Father: {fileID: 931042486578739900}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5045065952297266853
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1644046679661782882}
+  m_Layer: 0
+  m_Name: Muzzle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1644046679661782882
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5045065952297266853}
+  serializedVersion: 2
+  m_LocalRotation: {x: -2.9103824e-11, y: -0.6593728, z: 2.9103824e-11, w: 0.7518162}
+  m_LocalPosition: {x: -0.004, y: 0.0000003874302, z: -0.027}
+  m_LocalScale: {x: 4.567736, y: 4.5677366, z: 4.567736}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2800232918507384964}
+  m_LocalEulerAnglesHint: {x: 0, y: -82.504, z: 0}
 --- !u!1 &5957808935704220976
 GameObject:
   m_ObjectHideFlags: 0
@@ -392,11 +424,16 @@ MonoBehaviour:
   _equipLocalEulerAngles: {x: 9.656, y: 87.346, z: 103.68}
   _aimLocalPosition: {x: 0.038, y: 1.553, z: 0.657}
   _aimLocalEulerAngles: {x: 0, y: 0, z: 0}
-  _muzzlePoint: {fileID: 2800232918507384964}
+  _muzzlePoint: {fileID: 1644046679661782882}
   _muzzleFlashVFX: {fileID: 0}
   _leftHandPos: {fileID: 167985670830960711}
   _rightHandPos: {fileID: 2524337558401125387}
   _recoilMotion: {fileID: 4522790170733961671}
+  _bodyRecoil:
+    _impulse: 1
+    _recoilAngle: 5
+    _returnSpeed: 15
+    _maxAmount: 1.5
 --- !u!114 &4522790170733961671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -409,7 +446,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6ba768c82654964944c64f9e09194b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _recoilDistance: 0.05
+  _recoilTarget: {fileID: 2914777733470455433}
+  _recoilDistance: 0.1
   _recoilAngle: 5
   _recoilSpeed: 25
   _returnSpeed: 15

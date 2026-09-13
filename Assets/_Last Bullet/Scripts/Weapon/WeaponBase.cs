@@ -29,8 +29,11 @@ namespace LastBullet
         [SerializeField] private Transform _leftHandPos;
         [SerializeField] private Transform _rightHandPos;
         [SerializeField] private GunRecoilMotion  _recoilMotion;
+        [Header("Body Recoil")]
+        [SerializeField] private BodyRecoilSettings _bodyRecoil = BodyRecoilSettings.Default;
         public WeaponDataBase Data => _data;
         public AnimatorOverrideController AnimationOverride => _animationOverride;
+        public BodyRecoilSettings BodyRecoil => _bodyRecoil;
         public Vector3 EquipLocalPosition => _equipLocalPosition;
         public Quaternion EquipLocalRotation => Quaternion.Euler(_equipLocalEulerAngles);
         public Vector3 AimLocalPosition => _aimLocalPosition;
@@ -91,10 +94,10 @@ namespace LastBullet
             }
 
             // Only projectile weapons (e.g. grenade launcher) need a bullet pool.
-            if (_data.BulletPrefab != null)
-            {
-                _bulletPool = BulletObjectPoolManager.Instance.GetBulletPool(_data.BulletPrefab);
-            }
+            // if (_data.BulletPrefab != null)
+            // {
+            //     _bulletPool = BulletObjectPoolManager.Instance.GetBulletPool(_data.BulletPrefab);
+            // }
         }
 
         public void Fire(Vector3 origin, Vector3 direction)
@@ -182,6 +185,7 @@ namespace LastBullet
             flash.SetPool(_muzzleFlashPool);
             flash.transform.position = GetMuzzlePosition();
             flash.transform.SetParent(_muzzlePoint.transform, true);
+            flash.transform.localRotation = Quaternion.identity;
             // GameObject flash = Instantiate(_data.MuzzleFlashPrefab, _muzzlePoint);
             // Destroy(flash, 0.1f);
         }

@@ -16,6 +16,7 @@ namespace LastBullet
         private Vector3 _from;
         private Vector3 _to;
         private float _duration;
+        private ObjectPool<BulletTracer> _pool;
 
         private void Awake()
         {
@@ -24,20 +25,30 @@ namespace LastBullet
             gameObject.SetActive(false);
         }
 
+        public void SetPool(ObjectPool<BulletTracer> pool)
+        {
+            if(pool != null && _pool != pool)
+            {
+                _pool = pool;
+            }
+        }
+
         public void Show(Vector3 from, Vector3 to, float lifetime)
         {
             _duration = lifetime > 0f ? lifetime : _defaultLifetime;
 
             _trail.time = _duration;
+            _trail.emitting = false;
+            transform.position = from;
             _trail.Clear();
 
             _from = from;
             _to = to;
             _timer = _duration;
 
-            transform.position = _from;
             _isActive = true;
             gameObject.SetActive(true);
+            _trail.emitting = true;
         }
 
         private void Update()
@@ -50,9 +61,10 @@ namespace LastBullet
 
             if (_timer <= 0f)
             {
+                _trail.emitting = false;
                 _trail.Clear();
                 _isActive = false;
-                gameObject.SetActive(false);
+                _pool?.Store(this);
             }
         }
     }
