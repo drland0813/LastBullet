@@ -14,17 +14,19 @@ namespace LastBullet
         }
 
         public void Execute(Vector3 origin, Vector3 direction, GunDataSO data,
-                            ObjectPool<BulletProjectile> pool, float damage, GameObject hitImpactPrefab)
+                            ObjectPool<BulletProjectile> pool, float damage,
+                            GameObject hitImpactPrefab, GameObject instigator)
         {
             float damagePerPellet = damage / _pelletCount;
+            float forcePerPellet = data.HitForce / _pelletCount;
 
             for (int i = 0; i < _pelletCount; i++)
             {
                 Vector3 pelletDirection = ApplySpread(direction, _spreadAngle);
 
                 BulletProjectile bullet = pool.Get();
-                bullet.Launch(origin, pelletDirection, data.BulletSpeed, damagePerPellet,
-                              data.BulletLifetime, hitImpactPrefab, pool);
+                bullet.Launch(origin, pelletDirection, data.BulletSpeed, damagePerPellet, forcePerPellet,
+                              data.BulletLifetime, hitImpactPrefab, pool, instigator);
             }
         }
 

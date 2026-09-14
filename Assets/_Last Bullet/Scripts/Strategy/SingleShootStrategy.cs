@@ -5,7 +5,8 @@ namespace LastBullet
     public class SingleShootStrategy : IShootStrategy
     {
         public void Execute(Vector3 origin, Vector3 direction, GunDataSO data,
-                            ObjectPool<BulletProjectile> pool, float damage, GameObject hitImpactPrefab)
+                            ObjectPool<BulletProjectile> pool, float damage,
+                            GameObject hitImpactPrefab, GameObject instigator)
         {
             if (pool == null)
             {
@@ -17,8 +18,8 @@ namespace LastBullet
             Vector3 spreadDirection = ApplySpread(direction, data.Spread);
 
             BulletProjectile bullet = pool.Get();
-            bullet.Launch(origin, spreadDirection, data.BulletSpeed, damage,
-                          data.BulletLifetime, hitImpactPrefab, pool);
+            bullet.Launch(origin, spreadDirection, data.BulletSpeed, damage, data.HitForce,
+                          data.BulletLifetime, hitImpactPrefab, pool, instigator);
         }
 
         private Vector3 ApplySpread(Vector3 direction, float spread)

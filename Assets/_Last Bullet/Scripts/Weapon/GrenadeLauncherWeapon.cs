@@ -15,7 +15,7 @@ namespace LastBullet
         protected override void ShootInternal(Vector3 origin, Vector3 direction)
         {
             _shootStrategy.Execute(origin, direction, _data, _bulletPool,
-                                   _data.Damage, _data.HitImpactPrefab);
+                                   _data.Damage, _data.HitImpactPrefab, gameObject);
         }
     }
 }

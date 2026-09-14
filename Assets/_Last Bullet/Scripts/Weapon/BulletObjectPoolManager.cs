@@ -16,7 +16,14 @@ namespace LastBullet
         protected override void Awake()
         {
             base.Awake();
+            if (Instance != this as BulletObjectPoolManager) return;
             InitAllPools();
+            Debug.Log("[BulletObjectPoolManager] Initialized.", this);
+        }
+
+        private void OnDestroy()
+        {
+            Debug.Log("[BulletObjectPoolManager] Destroyed.", this);
         }
 
         private void InitAllPools()
@@ -32,12 +39,12 @@ namespace LastBullet
                     Debug.LogWarning($"[BulletObjectPoolManager] Duplicate sample name: '{key}'. Skipping.", this);
                     continue;
                 }
-                ObjectPool<BulletTracer> pool = new ObjectPool<BulletTracer>(sample);
+                ObjectPool<BulletTracer> pool = new ObjectPool<BulletTracer>(sample, transform);
                 Debug.Log($"Init pool: {key}");
                 _pools.Add(key, pool);
                 _poolRoots.Add(key, transform);
             }
-            _muzzlePool = new ObjectPool<MuzzleFlash>(_muzzlePrefab);
+            _muzzlePool = new ObjectPool<MuzzleFlash>(_muzzlePrefab, transform);
         }
 
         public ObjectPool<BulletTracer> GetBulletPool(string bulletName)
@@ -59,7 +66,16 @@ namespace LastBullet
                 return null;
             }
 
-            return GetBulletPool(bulletPrefab.name);
+            string key = bulletPrefab.name;
+            if (_pools.TryGetValue(key, out ObjectPool<BulletTracer> pool))
+            {
+                return pool;
+            }
+
+            pool = new ObjectPool<BulletTracer>(bulletPrefab, transform);
+            _pools.Add(key, pool);
+            _poolRoots.Add(key, transform);
+            return pool;
         }
 
         public ObjectPool<MuzzleFlash> GetMuzzleFlashPool()

@@ -4,6 +4,12 @@ using UnityEngine.Animations.Rigging;
 
 namespace LastBullet
 {
+    public enum WeaponSlot
+    {
+        Primary,
+        Secondary
+    }
+
     public class WeaponController : MonoBehaviour
     {
         [SerializeField] private AimController _aimController;
@@ -11,9 +17,10 @@ namespace LastBullet
         [Header("Database")]
         [SerializeField] private WeaponDatabaseSO _weaponDatabase;
 
-        [Header("Starting Weapon")]
+        [Header("Starting Loadout")]
         [SerializeField] private WeaponBase _startingWeapon;
         [SerializeField] private string _startingWeaponId;
+        [SerializeField] private string _startingSecondaryId = "";
 
         [Header("Rigging")] 
         [SerializeField] private Transform _equipPos;
@@ -40,12 +47,20 @@ namespace LastBullet
         
         private PlayerInputs _input;
         private IWeapon _currentWeapon;
+        private IWeapon _primaryWeapon;
+        private IWeapon _secondaryWeapon;
+        private WeaponSlot _activeSlot = WeaponSlot.Primary;
         private Transform _currentWeaponTransform;
         private bool _isFiring = false;
         private bool _isFiringMode;
         private bool _wasFirePressed;
+        private bool _moveWasIdle = true;
         private bool _weaponPoseDirty = true;
         private Coroutine _firstShotCoroutine;
+
+        [Header("Move Detection")]
+        [Tooltip("Joystick magnitude below this is treated as rest. Must match the move deadzone on the movement controller.")]
+        [SerializeField] [Min(0f)] private float _moveThreshold = 0.15f;
 
         private void Awake()
         {
@@ -63,8 +78,26 @@ namespace LastBullet
         public Action OnFirePerformed;
         public Action OnFireStarted;
         public Action OnFiringModeEnded;
+        public Action OnLoadoutChanged;
+        public Action OnActiveSlotChanged;
         public WeaponBase CurrentWeapon => _currentWeapon as WeaponBase;
+        public WeaponSlot ActiveSlot => _activeSlot;
         public bool IsFiringMode => _isFiringMode;
+        public bool HasWeapon => _primaryWeapon != null || _secondaryWeapon != null;
+
+        public WeaponBase GetSlotWeapon(WeaponSlot slot)
+        {
+            return GetSlot(slot) as WeaponBase;
+        }
+
+        public bool RefillCurrentWeapon()
+        {
+            if (CurrentWeapon == null || CurrentWeapon.Data == null) return false;
+            if (CurrentWeapon.CurrentAmmo >= CurrentWeapon.Data.TotalAmmo) return false;
+
+            CurrentWeapon.RefillAmmo();
+            return true;
+        }
 
         private void Start()
         {
@@ -86,14 +119,22 @@ namespace LastBullet
 
         }
 
+        private void LateUpdate()
+        {
+            if (_currentWeapon == null || _aimController == null || _input == null) return;
+            if (!(_input.fire || ForceFiring)) return;
+
+            _aimController.RotateTowardsCurrentTarget();
+        }
+
         private void HandleFire()
         {
             bool firePressed = _input.fire || ForceFiring;
-            bool movementStarted = _input.move.sqrMagnitude > 0.0001f;
+            bool movementActive = _input.move.sqrMagnitude > _moveThreshold * _moveThreshold;
 
-            if (movementStarted)
+            if (firePressed && !movementActive)
             {
-                ExitFiringMode();
+                _aimController?.SnapTowardsCurrentTarget();
             }
 
             bool fireStarted = firePressed && !_wasFirePressed;
@@ -109,6 +150,10 @@ namespace LastBullet
                     FireCurrentWeapon();
                 }
             }
+            else if (_isFiringMode && ShouldExitFiringMode(firePressed, movementActive))
+            {
+                ExitFiringMode();
+            }
 
             if (firePressed && _isFiringMode && _firstShotCoroutine == null)
             {
@@ -121,6 +166,7 @@ namespace LastBullet
             }
 
             _wasFirePressed = firePressed;
+            _moveWasIdle = !movementActive;
             _isFiring = _isFiringMode;
 
             if (_weaponPoseDirty)
@@ -135,6 +181,15 @@ namespace LastBullet
             }
         }
 
+        private bool ShouldExitFiringMode(bool firePressed, bool movementActive)
+        {
+            if (!movementActive) return false;
+
+            bool isNewMoveGesture = _moveWasIdle;
+            bool isReleasedWhileMoving = !firePressed && _wasFirePressed;
+            return isNewMoveGesture || isReleasedWhileMoving;
+        }
+
         private void HandleReload()
         {
             if (!_input.reload) return;
@@ -147,26 +202,32 @@ namespace LastBullet
         {
             if (!string.IsNullOrEmpty(_startingWeaponId))
             {
-                EquipWeaponById(_startingWeaponId);
-                return;
+                EquipWeaponByIdToSlot(_startingWeaponId, WeaponSlot.Primary);
+            }
+            else
+            {
+                EquipWeapon(_startingWeapon);
             }
 
-            EquipWeapon(_startingWeapon);
+            if (!string.IsNullOrEmpty(_startingSecondaryId))
+            {
+                EquipWeaponByIdToSlot(_startingSecondaryId, WeaponSlot.Secondary);
+            }
         }
 
-        public void EquipWeaponById(string weaponId)
+        public bool EquipWeaponById(string weaponId)
         {
             if (_weaponDatabase == null)
             {
                 Debug.LogError("[WeaponController] WeaponDatabaseSO is missing.");
-                return;
+                return false;
             }
-            
+
             WeaponBase weaponPrefab = _weaponDatabase.GetPrefabById(weaponId);
             if (weaponPrefab == null)
             {
                 Debug.LogError($"[WeaponController] No weapon data found for id: {weaponId}");
-                return;
+                return false;
             }
 
             WeaponBase weapon = Instantiate(weaponPrefab, transform);
@@ -174,10 +235,50 @@ namespace LastBullet
             {
                 Debug.LogError($"[WeaponController] Prefab '{weaponPrefab.name}' does not contain WeaponBase.");
                 Destroy(weapon.gameObject);
-                return;
+                return false;
             }
 
-            EquipWeapon(weapon);
+            WeaponSlot targetSlot = FindSlotForNewWeapon();
+            EquipToSlot(weapon, targetSlot);
+            if (targetSlot != _activeSlot)
+            {
+                SwitchToSlot(targetSlot);
+            }
+            return true;
+        }
+
+        private WeaponSlot FindSlotForNewWeapon()
+        {
+            if (GetSlot(WeaponSlot.Primary) == null) return WeaponSlot.Primary;
+            if (GetSlot(WeaponSlot.Secondary) == null) return WeaponSlot.Secondary;
+            return _activeSlot;
+        }
+
+        public bool EquipWeaponByIdToSlot(string weaponId, WeaponSlot slot)
+        {
+            if (_weaponDatabase == null)
+            {
+                Debug.LogError("[WeaponController] WeaponDatabaseSO is missing.");
+                return false;
+            }
+
+            WeaponBase weaponPrefab = _weaponDatabase.GetPrefabById(weaponId);
+            if (weaponPrefab == null)
+            {
+                Debug.LogError($"[WeaponController] No weapon data found for id: {weaponId}");
+                return false;
+            }
+
+            WeaponBase weapon = Instantiate(weaponPrefab, transform);
+            if (weapon == null)
+            {
+                Debug.LogError($"[WeaponController] Prefab '{weaponPrefab.name}' does not contain WeaponBase.");
+                Destroy(weapon.gameObject);
+                return false;
+            }
+
+            EquipToSlot(weapon, slot);
+            return true;
         }
 
         public void EquipWeapon(WeaponBase newWeapon)
@@ -187,24 +288,115 @@ namespace LastBullet
             ExitFiringMode();
             _wasFirePressed = false;
 
-            if (_currentWeapon != null)
+            ReplaceActiveSlot(newWeapon);
+            OnLoadoutChanged?.Invoke();
+            OnActiveSlotChanged?.Invoke();
+        }
+
+        public void SwitchToSlot(WeaponSlot slot)
+        {
+            if (slot == _activeSlot || GetSlot(slot) == null) return;
+
+            ExitFiringMode();
+            _wasFirePressed = false;
+
+            StoreActiveWeapon();
+            _activeSlot = slot;
+            ActivateWeapon(GetSlot(slot));
+            OnActiveSlotChanged?.Invoke();
+        }
+
+        public void ToggleSlot()
+        {
+            SwitchToSlot(_activeSlot == WeaponSlot.Primary ? WeaponSlot.Secondary : WeaponSlot.Primary);
+        }
+
+        private IWeapon GetSlot(WeaponSlot slot)
+        {
+            return slot == WeaponSlot.Primary ? _primaryWeapon : _secondaryWeapon;
+        }
+
+        private void SetSlot(WeaponSlot slot, IWeapon weapon)
+        {
+            if (slot == WeaponSlot.Primary)
             {
-                _currentWeapon.OnAmmoChanged -= HandleAmmoChanged;
-                _currentWeapon.OnFirePerformed -= HandleWeaponFirePerformed;
-                _currentWeapon.OnReloadStarted -= HandleReloadStarted;
-                _currentWeapon.OnReloadFinished -= HandleReloadFinished;
-                _currentWeapon.OnUnequip();
+                _primaryWeapon = weapon;
+            }
+            else
+            {
+                _secondaryWeapon = weapon;
+            }
+        }
+
+        private void EquipToSlot(WeaponBase newWeapon, WeaponSlot slot)
+        {
+            if (GetSlot(slot) as WeaponBase == newWeapon)
+            {
+                if (slot != _activeSlot)
+                {
+                    SwitchToSlot(slot);
+                }
+                return;
             }
 
-            _currentWeapon = newWeapon;
+            ExitFiringMode();
+            _wasFirePressed = false;
+
+            if (slot == _activeSlot)
+            {
+                ReplaceActiveSlot(newWeapon);
+            }
+            else
+            {
+                IWeapon oldWeapon = GetSlot(slot);
+                if (oldWeapon != null)
+                {
+                    oldWeapon.OnUnequip();
+                    Destroy(oldWeapon.GetTransform().gameObject);
+                }
+
+                SetSlot(slot, newWeapon);
+                newWeapon.OnUnequip();
+            }
+
+            OnLoadoutChanged?.Invoke();
+            OnActiveSlotChanged?.Invoke();
+        }
+
+        private void ReplaceActiveSlot(WeaponBase newWeapon)
+        {
+            IWeapon oldWeapon = GetSlot(_activeSlot);
+            if (oldWeapon != null)
+            {
+                UnsubscribeWeapon(oldWeapon);
+                oldWeapon.OnUnequip();
+                Destroy(oldWeapon.GetTransform().gameObject);
+            }
+
+            SetSlot(_activeSlot, newWeapon);
+            ActivateWeapon(newWeapon);
+        }
+
+        private void StoreActiveWeapon()
+        {
+            if (_currentWeapon == null) return;
+
+            UnsubscribeWeapon(_currentWeapon);
+            _currentWeapon.OnUnequip();
+            _currentWeapon = null;
+            _currentWeaponTransform = null;
+            _leftHandIKPos = null;
+            _rightHandIKPos = null;
+        }
+
+        private void ActivateWeapon(IWeapon weapon)
+        {
+            _currentWeapon = weapon;
             _currentWeapon.OnEquip();
             _leftHandIKPos = _currentWeapon.GetLeftHandTransform();
             _rightHandIKPos = _currentWeapon.GetRightHandTransform();
             _firePoint = _currentWeapon.GetFirePoint();
-            _currentWeapon.OnAmmoChanged += HandleAmmoChanged;
-            _currentWeapon.OnFirePerformed += HandleWeaponFirePerformed;
-            _currentWeapon.OnReloadStarted += HandleReloadStarted;
-            _currentWeapon.OnReloadFinished += HandleReloadFinished;
+            SubscribeWeapon(_currentWeapon);
             _currentWeaponTransform = _currentWeapon.GetTransform();
 
             ApplyWeaponSocketPoses();
@@ -213,28 +405,70 @@ namespace LastBullet
             _weaponPoseDirty = false;
         }
 
+        private void SubscribeWeapon(IWeapon weapon)
+        {
+            WeaponBase weaponBase = weapon as WeaponBase;
+            if (weaponBase == null) return;
+
+            weaponBase.OnAmmoChanged += HandleAmmoChanged;
+            weaponBase.OnFirePerformed += HandleWeaponFirePerformed;
+            weaponBase.OnReloadStarted += HandleReloadStarted;
+            weaponBase.OnReloadFinished += HandleReloadFinished;
+        }
+
+        private void UnsubscribeWeapon(IWeapon weapon)
+        {
+            WeaponBase weaponBase = weapon as WeaponBase;
+            if (weaponBase == null) return;
+
+            weaponBase.OnAmmoChanged -= HandleAmmoChanged;
+            weaponBase.OnFirePerformed -= HandleWeaponFirePerformed;
+            weaponBase.OnReloadStarted -= HandleReloadStarted;
+            weaponBase.OnReloadFinished -= HandleReloadFinished;
+        }
+
         public void UnequipCurrentWeapon()
         {
             if (_currentWeapon == null) return;
 
-            _currentWeapon.OnAmmoChanged -= HandleAmmoChanged;
-            _currentWeapon.OnFirePerformed -= HandleWeaponFirePerformed;
-            _currentWeapon.OnReloadStarted -= HandleReloadStarted;
-            _currentWeapon.OnReloadFinished -= HandleReloadFinished;
+            UnsubscribeWeapon(_currentWeapon);
 
             _currentWeapon.OnUnequip();
             _bodyRecoil?.ResetMotion();
             ExitFiringMode();
             Destroy(_currentWeaponTransform.gameObject);
+            SetSlot(_activeSlot, null);
             _currentWeapon = null;
             _currentWeaponTransform = null;
             _leftHandIKPos = null;
             _rightHandIKPos = null;
+            OnLoadoutChanged?.Invoke();
+
+            WeaponSlot otherSlot = _activeSlot == WeaponSlot.Primary ? WeaponSlot.Secondary : WeaponSlot.Primary;
+            if (GetSlot(otherSlot) != null)
+            {
+                SwitchToSlot(otherSlot);
+            }
         }
 
         private void HandleAmmoChanged(int current, int max)
         {
             Debug.Log($"[WeaponController] Ammo: {current}/{max}");
+
+            if (current <= 0)
+            {
+                AutoSwitchToLoadedSlot();
+            }
+        }
+
+        private void AutoSwitchToLoadedSlot()
+        {
+            WeaponSlot otherSlot = _activeSlot == WeaponSlot.Primary ? WeaponSlot.Secondary : WeaponSlot.Primary;
+            WeaponBase otherWeapon = GetSlot(otherSlot) as WeaponBase;
+            if (otherWeapon != null && otherWeapon.CurrentAmmo > 0)
+            {
+                SwitchToSlot(otherSlot);
+            }
         }
 
         private void HandleWeaponFirePerformed()

@@ -147,6 +147,15 @@ namespace LastBulet
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwitchWeapon"",
+                    ""type"": ""Button"",
+                    ""id"": ""416a26bb-061b-4f6c-b668-87a7f0818ea6"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -347,6 +356,17 @@ namespace LastBulet
                     ""action"": ""Reload"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""370118c4-3f60-4beb-8fa7-bed4dec64d7b"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""SwitchWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -409,6 +429,7 @@ namespace LastBulet
             m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
             m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
             m_Player_Reload = m_Player.FindAction("Reload", throwIfNotFound: true);
+            m_Player_SwitchWeapon = m_Player.FindAction("SwitchWeapon", throwIfNotFound: true);
         }
 
         ~@PlayerInputAction()
@@ -495,6 +516,7 @@ namespace LastBulet
         private readonly InputAction m_Player_Sprint;
         private readonly InputAction m_Player_Fire;
         private readonly InputAction m_Player_Reload;
+        private readonly InputAction m_Player_SwitchWeapon;
         /// <summary>
         /// Provides access to input actions defined in input action map "Player".
         /// </summary>
@@ -530,6 +552,10 @@ namespace LastBulet
             /// Provides access to the underlying input action "Player/Reload".
             /// </summary>
             public InputAction @Reload => m_Wrapper.m_Player_Reload;
+            /// <summary>
+            /// Provides access to the underlying input action "Player/SwitchWeapon".
+            /// </summary>
+            public InputAction @SwitchWeapon => m_Wrapper.m_Player_SwitchWeapon;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -574,6 +600,9 @@ namespace LastBulet
                 @Reload.started += instance.OnReload;
                 @Reload.performed += instance.OnReload;
                 @Reload.canceled += instance.OnReload;
+                @SwitchWeapon.started += instance.OnSwitchWeapon;
+                @SwitchWeapon.performed += instance.OnSwitchWeapon;
+                @SwitchWeapon.canceled += instance.OnSwitchWeapon;
             }
 
             /// <summary>
@@ -603,6 +632,9 @@ namespace LastBulet
                 @Reload.started -= instance.OnReload;
                 @Reload.performed -= instance.OnReload;
                 @Reload.canceled -= instance.OnReload;
+                @SwitchWeapon.started -= instance.OnSwitchWeapon;
+                @SwitchWeapon.performed -= instance.OnSwitchWeapon;
+                @SwitchWeapon.canceled -= instance.OnSwitchWeapon;
             }
 
             /// <summary>
@@ -737,6 +769,13 @@ namespace LastBulet
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnReload(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "SwitchWeapon" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnSwitchWeapon(InputAction.CallbackContext context);
         }
     }
 }

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8462271982481695048}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FatZombie_LeftToeBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2458225468896648206}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FatZombie_RightFoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,7 +72,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4433187967423044716}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FatZombie_LeftHandThumb3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,7 +104,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9010491505131541722}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FatZombie_RightHandRing1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,7 +136,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8345374881017679576}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FatZombie_RightHandRing3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -168,7 +168,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5062868748261661267}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FatZombie_RightHandRing4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -199,7 +199,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7260384537298140733}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FatZombie_LeftHandThumb2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -231,7 +231,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7250351771258516549}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FatZombie_LeftHandRing4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -262,7 +262,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 864652215387145733}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FatZombie_Hips
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -296,7 +296,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6102832874289436699}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FatZombie_LeftHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -330,7 +330,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7308444135272659297}
   - component: {fileID: 8080752949445200949}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FatZombie_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -452,7 +452,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3959078061544852209}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FatZombie_RightHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -485,7 +485,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1718409161660215149}
-  m_Layer: 0
+  - component: {fileID: 784321872565849175}
+  - component: {fileID: 8314997758604258225}
+  - component: {fileID: 358394987881237355}
+  m_Layer: 3
   m_Name: FatZombie_RightForeArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -508,6 +511,102 @@ Transform:
   - {fileID: 3959078061544852209}
   m_Father: {fileID: 1902054218262084805}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &784321872565849175
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3271094166123997253}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.07745196
+  m_Height: 0.38725978
+  m_Direction: 0
+  m_Center: {x: -0.19362989, y: 0, z: 0}
+--- !u!54 &8314997758604258225
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3271094166123997253}
+  serializedVersion: 4
+  m_Mass: 1.25
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!144 &358394987881237355
+CharacterJoint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3271094166123997253}
+  m_ConnectedBody: {fileID: 1089129351225011696}
+  m_ConnectedArticulationBody: {fileID: 0}
+  m_Anchor: {x: 0, y: 0, z: 0}
+  m_Axis: {x: 0, y: 0, z: 1}
+  m_AutoConfigureConnectedAnchor: 1
+  m_ConnectedAnchor: {x: 0, y: 0, z: 0}
+  serializedVersion: 2
+  m_SwingAxis: {x: 0, y: -1, z: 0}
+  m_TwistLimitSpring:
+    spring: 0
+    damper: 0
+  m_LowTwistLimit:
+    limit: -90
+    bounciness: 0
+    contactDistance: 0
+  m_HighTwistLimit:
+    limit: 0
+    bounciness: 0
+    contactDistance: 0
+  m_SwingLimitSpring:
+    spring: 0
+    damper: 0
+  m_Swing1Limit:
+    limit: 0
+    bounciness: 0
+    contactDistance: 0
+  m_Swing2Limit:
+    limit: 0
+    bounciness: 0
+    contactDistance: 0
+  m_EnableProjection: 0
+  m_ProjectionDistance: 0.1
+  m_ProjectionAngle: 180
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 0
+  m_EnablePreprocessing: 0
+  m_MassScale: 1
+  m_ConnectedMassScale: 1
 --- !u!1 &3467469913782349666
 GameObject:
   m_ObjectHideFlags: 0
@@ -517,7 +616,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1576533261938515699}
-  m_Layer: 0
+  - component: {fileID: 2116555245445632937}
+  - component: {fileID: 5094042315973901776}
+  - component: {fileID: 6615287122989638621}
+  m_Layer: 3
   m_Name: FatZombie_RightUpLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -540,6 +642,102 @@ Transform:
   - {fileID: 7269213708240333939}
   m_Father: {fileID: 864652215387145733}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &2116555245445632937
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3467469913782349666}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.12117235
+  m_Height: 0.40390784
+  m_Direction: 0
+  m_Center: {x: -0.20195392, y: 0, z: 0}
+--- !u!54 &5094042315973901776
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3467469913782349666}
+  serializedVersion: 4
+  m_Mass: 1.875
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!144 &6615287122989638621
+CharacterJoint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3467469913782349666}
+  m_ConnectedBody: {fileID: 6103720672577238924}
+  m_ConnectedArticulationBody: {fileID: 0}
+  m_Anchor: {x: 0, y: 0, z: 0}
+  m_Axis: {x: 0, y: -1, z: 0}
+  m_AutoConfigureConnectedAnchor: 1
+  m_ConnectedAnchor: {x: 0, y: 0, z: 0}
+  serializedVersion: 2
+  m_SwingAxis: {x: 0, y: 0, z: 1}
+  m_TwistLimitSpring:
+    spring: 0
+    damper: 0
+  m_LowTwistLimit:
+    limit: -20
+    bounciness: 0
+    contactDistance: 0
+  m_HighTwistLimit:
+    limit: 70
+    bounciness: 0
+    contactDistance: 0
+  m_SwingLimitSpring:
+    spring: 0
+    damper: 0
+  m_Swing1Limit:
+    limit: 30
+    bounciness: 0
+    contactDistance: 0
+  m_Swing2Limit:
+    limit: 0
+    bounciness: 0
+    contactDistance: 0
+  m_EnableProjection: 0
+  m_ProjectionDistance: 0.1
+  m_ProjectionAngle: 180
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 0
+  m_EnablePreprocessing: 0
+  m_MassScale: 1
+  m_ConnectedMassScale: 1
 --- !u!1 &3692331076846898422
 GameObject:
   m_ObjectHideFlags: 0
@@ -549,7 +747,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7885614420044713409}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FatZombie_RightHandThumb4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -580,7 +778,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2930510664823649426}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FatZombie_LeftHandRing2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -612,7 +810,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3596463217228086594}
-  m_Layer: 0
+  - component: {fileID: 2581213315411901643}
+  - component: {fileID: 4425416726831275965}
+  - component: {fileID: 4631049193194107475}
+  m_Layer: 3
   m_Name: FatZombie_LeftLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -635,6 +836,102 @@ Transform:
   - {fileID: 5377837830041884280}
   m_Father: {fileID: 6279822555777325656}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &2581213315411901643
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3772929585426043655}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.10229898
+  m_Height: 0.40919593
+  m_Direction: 0
+  m_Center: {x: -0.20459796, y: 0, z: 0}
+--- !u!54 &4425416726831275965
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3772929585426043655}
+  serializedVersion: 4
+  m_Mass: 1.875
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!144 &4631049193194107475
+CharacterJoint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3772929585426043655}
+  m_ConnectedBody: {fileID: 239976122350093874}
+  m_ConnectedArticulationBody: {fileID: 0}
+  m_Anchor: {x: 0, y: 0, z: 0}
+  m_Axis: {x: 0, y: -1, z: 0}
+  m_AutoConfigureConnectedAnchor: 1
+  m_ConnectedAnchor: {x: 0, y: 0, z: 0}
+  serializedVersion: 2
+  m_SwingAxis: {x: 0, y: 0, z: 1}
+  m_TwistLimitSpring:
+    spring: 0
+    damper: 0
+  m_LowTwistLimit:
+    limit: -80
+    bounciness: 0
+    contactDistance: 0
+  m_HighTwistLimit:
+    limit: 0
+    bounciness: 0
+    contactDistance: 0
+  m_SwingLimitSpring:
+    spring: 0
+    damper: 0
+  m_Swing1Limit:
+    limit: 0
+    bounciness: 0
+    contactDistance: 0
+  m_Swing2Limit:
+    limit: 0
+    bounciness: 0
+    contactDistance: 0
+  m_EnableProjection: 0
+  m_ProjectionDistance: 0.1
+  m_ProjectionAngle: 180
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 0
+  m_EnablePreprocessing: 0
+  m_MassScale: 1
+  m_ConnectedMassScale: 1
 --- !u!1 &3937312954139428664
 GameObject:
   m_ObjectHideFlags: 0
@@ -644,7 +941,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5669957128234131259}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FatZombie_Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -677,7 +974,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1114283668126983247}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FatZombie_LeftHandRing3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -709,7 +1006,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1367283827797131934}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FatZombie_Spine1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -741,7 +1038,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1606851396040579258}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FatZombie_RightShoulder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -773,7 +1070,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6279822555777325656}
-  m_Layer: 0
+  - component: {fileID: 1036307558823768717}
+  - component: {fileID: 239976122350093874}
+  - component: {fileID: 289191957122058970}
+  m_Layer: 3
   m_Name: FatZombie_LeftUpLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -796,6 +1096,102 @@ Transform:
   - {fileID: 3596463217228086594}
   m_Father: {fileID: 864652215387145733}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &1036307558823768717
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4307624032620540545}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.12117235
+  m_Height: 0.40390784
+  m_Direction: 0
+  m_Center: {x: -0.20195392, y: 0, z: 0}
+--- !u!54 &239976122350093874
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4307624032620540545}
+  serializedVersion: 4
+  m_Mass: 1.875
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!144 &289191957122058970
+CharacterJoint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4307624032620540545}
+  m_ConnectedBody: {fileID: 6103720672577238924}
+  m_ConnectedArticulationBody: {fileID: 0}
+  m_Anchor: {x: 0, y: 0, z: 0}
+  m_Axis: {x: 0, y: -1, z: 0}
+  m_AutoConfigureConnectedAnchor: 1
+  m_ConnectedAnchor: {x: 0, y: 0, z: 0}
+  serializedVersion: 2
+  m_SwingAxis: {x: 0, y: 0, z: 1}
+  m_TwistLimitSpring:
+    spring: 0
+    damper: 0
+  m_LowTwistLimit:
+    limit: -20
+    bounciness: 0
+    contactDistance: 0
+  m_HighTwistLimit:
+    limit: 70
+    bounciness: 0
+    contactDistance: 0
+  m_SwingLimitSpring:
+    spring: 0
+    damper: 0
+  m_Swing1Limit:
+    limit: 30
+    bounciness: 0
+    contactDistance: 0
+  m_Swing2Limit:
+    limit: 0
+    bounciness: 0
+    contactDistance: 0
+  m_EnableProjection: 0
+  m_ProjectionDistance: 0.1
+  m_ProjectionAngle: 180
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 0
+  m_EnablePreprocessing: 0
+  m_MassScale: 1
+  m_ConnectedMassScale: 1
 --- !u!1 &4543931300538742319
 GameObject:
   m_ObjectHideFlags: 0
@@ -806,7 +1202,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6890657340363733919}
   - component: {fileID: 311001287597599278}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FatZombie_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -928,7 +1324,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6114352312902003564}
-  m_Layer: 0
+  - component: {fileID: 1966920429213281335}
+  - component: {fileID: 4252282984717567868}
+  - component: {fileID: 1167967319026328819}
+  m_Layer: 3
   m_Name: FatZombie_LeftForeArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -951,6 +1350,102 @@ Transform:
   - {fileID: 6102832874289436699}
   m_Father: {fileID: 5332367484757367501}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &1966920429213281335
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4885784150921834747}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.07745197
+  m_Height: 0.38725984
+  m_Direction: 0
+  m_Center: {x: -0.19362992, y: 0, z: 0}
+--- !u!54 &4252282984717567868
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4885784150921834747}
+  serializedVersion: 4
+  m_Mass: 1.25
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!144 &1167967319026328819
+CharacterJoint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4885784150921834747}
+  m_ConnectedBody: {fileID: 6774694326794957720}
+  m_ConnectedArticulationBody: {fileID: 0}
+  m_Anchor: {x: 0, y: 0, z: 0}
+  m_Axis: {x: 0, y: 0, z: 1}
+  m_AutoConfigureConnectedAnchor: 1
+  m_ConnectedAnchor: {x: 0, y: 0, z: 0}
+  serializedVersion: 2
+  m_SwingAxis: {x: 0, y: 1, z: 0}
+  m_TwistLimitSpring:
+    spring: 0
+    damper: 0
+  m_LowTwistLimit:
+    limit: -90
+    bounciness: 0
+    contactDistance: 0
+  m_HighTwistLimit:
+    limit: 0
+    bounciness: 0
+    contactDistance: 0
+  m_SwingLimitSpring:
+    spring: 0
+    damper: 0
+  m_Swing1Limit:
+    limit: 0
+    bounciness: 0
+    contactDistance: 0
+  m_Swing2Limit:
+    limit: 0
+    bounciness: 0
+    contactDistance: 0
+  m_EnableProjection: 0
+  m_ProjectionDistance: 0.1
+  m_ProjectionAngle: 180
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 0
+  m_EnablePreprocessing: 0
+  m_MassScale: 1
+  m_ConnectedMassScale: 1
 --- !u!1 &5010127469898649238
 GameObject:
   m_ObjectHideFlags: 0
@@ -960,7 +1455,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6862483485873118990}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FatZombie_Neck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -992,7 +1487,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6525933692902851735}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FatZombie_LeftHandRing1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1024,7 +1519,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7821939077195323420}
-  m_Layer: 0
+  - component: {fileID: 5386371885463926893}
+  - component: {fileID: 5973112558026316390}
+  - component: {fileID: 5475211050743507827}
+  m_Layer: 3
   m_Name: FatZombie_Spine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1047,6 +1545,100 @@ Transform:
   - {fileID: 1367283827797131934}
   m_Father: {fileID: 864652215387145733}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &5386371885463926893
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5449623289909334324}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.3562983, y: 0.31873065, z: 0.23786417}
+  m_Center: {x: -0.17814918, y: 0, z: -0.0121302605}
+--- !u!54 &5973112558026316390
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5449623289909334324}
+  serializedVersion: 4
+  m_Mass: 3.125
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!144 &5475211050743507827
+CharacterJoint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5449623289909334324}
+  m_ConnectedBody: {fileID: 6103720672577238924}
+  m_ConnectedArticulationBody: {fileID: 0}
+  m_Anchor: {x: 0, y: 0, z: 0}
+  m_Axis: {x: 0, y: 1, z: 0}
+  m_AutoConfigureConnectedAnchor: 1
+  m_ConnectedAnchor: {x: 0, y: 0, z: 0}
+  serializedVersion: 2
+  m_SwingAxis: {x: 0, y: 0, z: 1}
+  m_TwistLimitSpring:
+    spring: 0
+    damper: 0
+  m_LowTwistLimit:
+    limit: -20
+    bounciness: 0
+    contactDistance: 0
+  m_HighTwistLimit:
+    limit: 20
+    bounciness: 0
+    contactDistance: 0
+  m_SwingLimitSpring:
+    spring: 0
+    damper: 0
+  m_Swing1Limit:
+    limit: 10
+    bounciness: 0
+    contactDistance: 0
+  m_Swing2Limit:
+    limit: 0
+    bounciness: 0
+    contactDistance: 0
+  m_EnableProjection: 0
+  m_ProjectionDistance: 0.1
+  m_ProjectionAngle: 180
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 0
+  m_EnablePreprocessing: 0
+  m_MassScale: 1
+  m_ConnectedMassScale: 1
 --- !u!1 &6081936963526968595
 GameObject:
   m_ObjectHideFlags: 0
@@ -1056,7 +1648,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5332367484757367501}
-  m_Layer: 0
+  - component: {fileID: 7016000169299801820}
+  - component: {fileID: 6774694326794957720}
+  - component: {fileID: 2671270250855651147}
+  m_Layer: 3
   m_Name: FatZombie_LeftArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1079,6 +1674,102 @@ Transform:
   - {fileID: 6114352312902003564}
   m_Father: {fileID: 4768514009371423936}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &7016000169299801820
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6081936963526968595}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.07825853
+  m_Height: 0.31303412
+  m_Direction: 0
+  m_Center: {x: -0.15651706, y: 0, z: 0}
+--- !u!54 &6774694326794957720
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6081936963526968595}
+  serializedVersion: 4
+  m_Mass: 1.25
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!144 &2671270250855651147
+CharacterJoint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6081936963526968595}
+  m_ConnectedBody: {fileID: 5973112558026316390}
+  m_ConnectedArticulationBody: {fileID: 0}
+  m_Anchor: {x: 0, y: 0, z: 0}
+  m_Axis: {x: 0, y: 1, z: 0}
+  m_AutoConfigureConnectedAnchor: 1
+  m_ConnectedAnchor: {x: 0, y: 0, z: 0}
+  serializedVersion: 2
+  m_SwingAxis: {x: 0, y: 0, z: 1}
+  m_TwistLimitSpring:
+    spring: 0
+    damper: 0
+  m_LowTwistLimit:
+    limit: -70
+    bounciness: 0
+    contactDistance: 0
+  m_HighTwistLimit:
+    limit: 10
+    bounciness: 0
+    contactDistance: 0
+  m_SwingLimitSpring:
+    spring: 0
+    damper: 0
+  m_Swing1Limit:
+    limit: 50
+    bounciness: 0
+    contactDistance: 0
+  m_Swing2Limit:
+    limit: 0
+    bounciness: 0
+    contactDistance: 0
+  m_EnableProjection: 0
+  m_ProjectionDistance: 0.1
+  m_ProjectionAngle: 180
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 0
+  m_EnablePreprocessing: 0
+  m_MassScale: 1
+  m_ConnectedMassScale: 1
 --- !u!1 &6151663356618969499
 GameObject:
   m_ObjectHideFlags: 0
@@ -1088,7 +1779,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5395933559192366910}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FatZombie_LeftHandThumb1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1120,7 +1811,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2281302858039340755}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FatZombie_RightHandThumb3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1152,7 +1843,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2176986782582717531}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FatZombie_Spine2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1186,7 +1877,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7269213708240333939}
-  m_Layer: 0
+  - component: {fileID: 475970160316207464}
+  - component: {fileID: 7202885678575538292}
+  - component: {fileID: 7212359538147238194}
+  m_Layer: 3
   m_Name: FatZombie_RightLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1209,6 +1903,102 @@ Transform:
   - {fileID: 2458225468896648206}
   m_Father: {fileID: 1576533261938515699}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &475970160316207464
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6474868158700625134}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.10229897
+  m_Height: 0.40919587
+  m_Direction: 0
+  m_Center: {x: -0.20459794, y: 0, z: 0}
+--- !u!54 &7202885678575538292
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6474868158700625134}
+  serializedVersion: 4
+  m_Mass: 1.875
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!144 &7212359538147238194
+CharacterJoint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6474868158700625134}
+  m_ConnectedBody: {fileID: 5094042315973901776}
+  m_ConnectedArticulationBody: {fileID: 0}
+  m_Anchor: {x: 0, y: 0, z: 0}
+  m_Axis: {x: 0, y: -1, z: 0}
+  m_AutoConfigureConnectedAnchor: 1
+  m_ConnectedAnchor: {x: 0, y: 0, z: 0}
+  serializedVersion: 2
+  m_SwingAxis: {x: 0, y: 0, z: 1}
+  m_TwistLimitSpring:
+    spring: 0
+    damper: 0
+  m_LowTwistLimit:
+    limit: -80
+    bounciness: 0
+    contactDistance: 0
+  m_HighTwistLimit:
+    limit: 0
+    bounciness: 0
+    contactDistance: 0
+  m_SwingLimitSpring:
+    spring: 0
+    damper: 0
+  m_Swing1Limit:
+    limit: 0
+    bounciness: 0
+    contactDistance: 0
+  m_Swing2Limit:
+    limit: 0
+    bounciness: 0
+    contactDistance: 0
+  m_EnableProjection: 0
+  m_ProjectionDistance: 0.1
+  m_ProjectionAngle: 180
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 0
+  m_EnablePreprocessing: 0
+  m_MassScale: 1
+  m_ConnectedMassScale: 1
 --- !u!1 &6930924220571940459
 GameObject:
   m_ObjectHideFlags: 0
@@ -1218,7 +2008,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8576639807852265670}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FatZombie_LeftHandThumb4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1252,7 +2042,12 @@ GameObject:
   - component: {fileID: 2144497265640796396}
   - component: {fileID: 7083084877502366120}
   - component: {fileID: 2231038943393643195}
-  m_Layer: 0
+  - component: {fileID: 6630812805123183244}
+  - component: {fileID: 2678682556481714577}
+  - component: {fileID: 3628253824214183828}
+  - component: {fileID: 8857620918642427318}
+  - component: {fileID: 6472807781627321667}
+  m_Layer: 3
   m_Name: FatZombie
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1286,7 +2081,7 @@ Animator:
   m_GameObject: {fileID: 7296279290619250858}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 4b11d0901d1e3f04da6b00a4ff5d74dd, type: 3}
-  m_Controller: {fileID: 9100000, guid: e433fe4bbba9f05428bfec71570da4ab, type: 2}
+  m_Controller: {fileID: 9100000, guid: 0f564191d2585524a8a157930c39c83c, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1328,9 +2123,9 @@ NavMeshAgent:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7296279290619250858}
   m_Enabled: 1
-  m_AgentTypeID: 1479372276
+  m_AgentTypeID: 0
   m_Radius: 0.6
-  m_Speed: 3.5
+  m_Speed: 3
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -1342,6 +2137,110 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &6630812805123183244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7296279290619250858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c4e7a2f3d6b4a1e9f0c5b7d2e8a6f31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stats: {fileID: 11400000, guid: 83e616b82a6653944b4e1cd4303e83ea, type: 2}
+  _animator: {fileID: 2144497265640796396}
+  _agent: {fileID: 2231038943393643195}
+  _target: {fileID: 0}
+  _colliders: []
+  _ragdoll: {fileID: 2678682556481714577}
+  _dissolve: {fileID: 8857620918642427318}
+  _dropper: {fileID: 6472807781627321667}
+  _bloodImpactPrefab: {fileID: 4188212961278762872, guid: 57df4748ac220fe4180d6189f76b5b63,
+    type: 3}
+  _findTargetOnStart: 1
+  _disableCollidersOnDeath: 1
+  _useRagdoll: 1
+--- !u!114 &2678682556481714577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7296279290619250858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0bb4dedb6be9c849824707f4f33458d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 2144497265640796396}
+  _mainCollider: {fileID: 3628253824214183828}
+  _dissolve: {fileID: 8857620918642427318}
+  _minDeathImpulse: 15
+--- !u!136 &3628253824214183828
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7296279290619250858}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.28
+  m_Height: 1.4844288
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.75622135, z: 0}
+--- !u!114 &8857620918642427318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7296279290619250858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd10cc03d116887439f26fc3dd58f3de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dissolveTemplate: {fileID: -876546973899608171, guid: 5227cf7a6618be74890248a95237b14c,
+    type: 3}
+  _dissolveFrom: 1.27
+  _dissolveTo: -0.5
+--- !u!114 &6472807781627321667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7296279290619250858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e09f9b74249763449ad783e84b3cc1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dropTable:
+  - Prefab: {fileID: 6760893543540764502, guid: de05c24ae6ad0a648b97659cac4a9e49,
+      type: 3}
+    Weight: 1
+  - Prefab: {fileID: 7280261741589141208, guid: 729a7e75f079aa347a7dfb80fef80b2a,
+      type: 3}
+    Weight: 1
+  - Prefab: {fileID: 4422256873740020136, guid: d4b70d0e0825ea74583bde7b5706dec4,
+      type: 3}
+    Weight: 1
+  _dropChance: 0.35
+  _spawnHeight: 0.5
 --- !u!1 &7721623802392174519
 GameObject:
   m_ObjectHideFlags: 0
@@ -1351,7 +2250,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2862290069742301569}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FatZombie_RightHandThumb1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1383,7 +2282,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5377837830041884280}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FatZombie_LeftFoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1415,7 +2314,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3556415961915080938}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FatZombie_RightHandThumb2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1447,7 +2346,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3016535296257786628}
-  m_Layer: 0
+  - component: {fileID: 419874035409730132}
+  - component: {fileID: 5814137115224105980}
+  - component: {fileID: 5483900396989541014}
+  m_Layer: 3
   m_Name: FatZombie_Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1469,6 +2371,100 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6862483485873118990}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &419874035409730132
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7921529890306709154}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.1593653
+  m_Center: {x: 0, y: 0.1593653, z: 0}
+--- !u!54 &5814137115224105980
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7921529890306709154}
+  serializedVersion: 4
+  m_Mass: 1.25
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!144 &5483900396989541014
+CharacterJoint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7921529890306709154}
+  m_ConnectedBody: {fileID: 5973112558026316390}
+  m_ConnectedArticulationBody: {fileID: 0}
+  m_Anchor: {x: 0, y: 0, z: 0}
+  m_Axis: {x: 1, y: 0, z: 0}
+  m_AutoConfigureConnectedAnchor: 1
+  m_ConnectedAnchor: {x: 0, y: 0, z: 0}
+  serializedVersion: 2
+  m_SwingAxis: {x: 0, y: 0, z: 1}
+  m_TwistLimitSpring:
+    spring: 0
+    damper: 0
+  m_LowTwistLimit:
+    limit: -40
+    bounciness: 0
+    contactDistance: 0
+  m_HighTwistLimit:
+    limit: 25
+    bounciness: 0
+    contactDistance: 0
+  m_SwingLimitSpring:
+    spring: 0
+    damper: 0
+  m_Swing1Limit:
+    limit: 25
+    bounciness: 0
+    contactDistance: 0
+  m_Swing2Limit:
+    limit: 0
+    bounciness: 0
+    contactDistance: 0
+  m_EnableProjection: 0
+  m_ProjectionDistance: 0.1
+  m_ProjectionAngle: 180
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 0
+  m_EnablePreprocessing: 0
+  m_MassScale: 1
+  m_ConnectedMassScale: 1
 --- !u!1 &7946913433434118832
 GameObject:
   m_ObjectHideFlags: 0
@@ -1478,7 +2474,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1162281320769570849}
-  m_Layer: 0
+  - component: {fileID: 1517508220277120845}
+  - component: {fileID: 6103720672577238924}
+  m_Layer: 3
   m_Name: FatZombie_Skel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1501,6 +2499,54 @@ Transform:
   - {fileID: 864652215387145733}
   m_Father: {fileID: 3390132819577565816}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1517508220277120845
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7946913433434118832}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.3187306, y: 0.963, z: 0.65964913}
+  m_Center: {x: 0, y: 0.4815, z: -0.0121302605}
+--- !u!54 &6103720672577238924
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7946913433434118832}
+  serializedVersion: 4
+  m_Mass: 3.125
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &8165800695865263981
 GameObject:
   m_ObjectHideFlags: 0
@@ -1510,7 +2556,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4576276921504423695}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FatZombie_RightToeBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1541,7 +2587,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1902054218262084805}
-  m_Layer: 0
+  - component: {fileID: 403267826414839231}
+  - component: {fileID: 1089129351225011696}
+  - component: {fileID: 2188970336709519234}
+  m_Layer: 3
   m_Name: FatZombie_RightArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1564,6 +2613,102 @@ Transform:
   - {fileID: 1718409161660215149}
   m_Father: {fileID: 1606851396040579258}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &403267826414839231
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8221064325443112404}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.078258514
+  m_Height: 0.31303406
+  m_Direction: 0
+  m_Center: {x: -0.15651703, y: 0, z: 0}
+--- !u!54 &1089129351225011696
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8221064325443112404}
+  serializedVersion: 4
+  m_Mass: 1.25
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!144 &2188970336709519234
+CharacterJoint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8221064325443112404}
+  m_ConnectedBody: {fileID: 5973112558026316390}
+  m_ConnectedArticulationBody: {fileID: 0}
+  m_Anchor: {x: 0, y: 0, z: 0}
+  m_Axis: {x: 0, y: -1, z: 0}
+  m_AutoConfigureConnectedAnchor: 1
+  m_ConnectedAnchor: {x: 0, y: 0, z: 0}
+  serializedVersion: 2
+  m_SwingAxis: {x: 0, y: 0, z: 1}
+  m_TwistLimitSpring:
+    spring: 0
+    damper: 0
+  m_LowTwistLimit:
+    limit: -70
+    bounciness: 0
+    contactDistance: 0
+  m_HighTwistLimit:
+    limit: 10
+    bounciness: 0
+    contactDistance: 0
+  m_SwingLimitSpring:
+    spring: 0
+    damper: 0
+  m_Swing1Limit:
+    limit: 50
+    bounciness: 0
+    contactDistance: 0
+  m_Swing2Limit:
+    limit: 0
+    bounciness: 0
+    contactDistance: 0
+  m_EnableProjection: 0
+  m_ProjectionDistance: 0.1
+  m_ProjectionAngle: 180
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 0
+  m_EnablePreprocessing: 0
+  m_MassScale: 1
+  m_ConnectedMassScale: 1
 --- !u!1 &8308712933222759479
 GameObject:
   m_ObjectHideFlags: 0
@@ -1573,7 +2718,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 961186605780954068}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FatZombie_RightHandRing2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1605,7 +2750,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4768514009371423936}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FatZombie_LeftShoulder
   m_TagString: Untagged
   m_Icon: {fileID: 0}

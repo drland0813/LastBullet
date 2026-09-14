@@ -22,7 +22,12 @@ namespace LastBullet
 
         [Header("Fire Point")]
         [SerializeField] private Transform _muzzlePoint;
-        
+
+        [Header("Muzzle Flash Pose")]
+        [Tooltip("Local rotation offset applied to pooled flash so its emission axis matches the barrel.")]
+        [SerializeField] private Vector3 _muzzleFlashLocalEuler = Vector3.zero;
+        [SerializeField] private Vector3 _muzzleFlashLocalPosition = Vector3.zero;
+
         [SerializeField] private ParticleSystem _muzzleFlashVFX;
         [SerializeField] private ParticleSystem _casingBullet;
 
@@ -42,6 +47,7 @@ namespace LastBullet
         public bool CanFire => _currentAmmo > 0 && !_isReloading && Time.time >= _nextFireTime;
         public bool IsReloading => _isReloading;
         public int CurrentAmmo => _currentAmmo;
+        public int ReserveAmmo => _reserveAmmo;
 
         public Transform GetTransform()
         {
@@ -68,6 +74,7 @@ namespace LastBullet
         }
 
         private int _currentAmmo;
+        private int _reserveAmmo;
         private bool _isReloading;
         private float _nextFireTime;
         private bool _fireInputHeld;
@@ -82,7 +89,9 @@ namespace LastBullet
 
             if (_data != null)
             {
-                _currentAmmo = _data.MagazineSize;
+                // Reload shelved: fire continuously until TotalAmmo is depleted.
+                _currentAmmo = Mathf.Max(0, _data.TotalAmmo);
+                _reserveAmmo = 0;
             }
         }
 
@@ -125,7 +134,7 @@ namespace LastBullet
             _casingBullet?.Emit(1);
             _recoilMotion.Play();
             OnFirePerformed?.Invoke();
-            OnAmmoChanged?.Invoke(_currentAmmo, _data.MagazineSize);
+            OnAmmoChanged?.Invoke(_currentAmmo, _data.TotalAmmo);
 
             if (_currentAmmo <= 0)
             {
@@ -140,10 +149,29 @@ namespace LastBullet
 
         public void Reload()
         {
-            if (_isReloading || _currentAmmo == _data.MagazineSize) return;
+            // Reload shelved for now: continuous fire until TotalAmmo is depleted.
+            return;
+        }
 
-            if (_reloadCoroutine != null) StopCoroutine(_reloadCoroutine);
-            _reloadCoroutine = StartCoroutine(ReloadCoroutine());
+        public void RefillAmmo()
+        {
+            if (_data == null) return;
+
+            bool wasReloading = _isReloading;
+            if (_reloadCoroutine != null)
+            {
+                StopCoroutine(_reloadCoroutine);
+                _reloadCoroutine = null;
+            }
+            _isReloading = false;
+
+            _currentAmmo = Mathf.Max(0, _data.TotalAmmo);
+            _reserveAmmo = 0;
+            if (wasReloading)
+            {
+                OnReloadFinished?.Invoke();
+            }
+            OnAmmoChanged?.Invoke(_currentAmmo, _data.TotalAmmo);
         }
 
         public virtual void OnEquip()
@@ -171,7 +199,10 @@ namespace LastBullet
 
             yield return new WaitForSeconds(_data.ReloadTime);
 
-            _currentAmmo = _data.MagazineSize;
+            int needed = _data.MagazineSize - _currentAmmo;
+            int taken = Mathf.Min(needed, _reserveAmmo);
+            _reserveAmmo -= taken;
+            _currentAmmo += taken;
             _isReloading = false;
 
             OnReloadFinished?.Invoke();
@@ -182,20 +213,42 @@ namespace LastBullet
         {
             if (_data.MuzzleFlashPrefab == null || _muzzlePoint == null) return;
 
-            _muzzleFlashPool = BulletObjectPoolManager.Instance.GetMuzzleFlashPool();
+            BulletObjectPoolManager manager = BulletObjectPoolManager.Instance;
+            if (manager == null)
+            {
+                manager = FindFirstObjectByType<BulletObjectPoolManager>();
+            }
+            if (manager == null)
+            {
+                Debug.LogError("[WeaponBase] BulletObjectPoolManager is missing in the scene. Muzzle flash skipped.", this);
+                return;
+            }
+
+            _muzzleFlashPool = manager.GetMuzzleFlashPool();
             var flash = _muzzleFlashPool.Get();
+            if (flash == null) return;
             flash.SetPool(_muzzleFlashPool);
-            flash.transform.position = GetMuzzlePosition();
-            flash.transform.SetParent(_muzzlePoint.transform, true);
-            flash.transform.localRotation = Quaternion.identity;
+            flash.transform.SetParent(_muzzlePoint.transform, false);
+            flash.transform.localPosition = _muzzleFlashLocalPosition;
+            flash.transform.localRotation = Quaternion.Euler(_muzzleFlashLocalEuler);
             // GameObject flash = Instantiate(_data.MuzzleFlashPrefab, _muzzlePoint);
             // Destroy(flash, 0.1f);
         }
 
         private void PlaySound(AudioClip clip)
         {
-            if (clip == null || _audioSource == null) return;
-            _audioSource.PlayOneShot(clip);
+            if (clip == null) return;
+
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlayAt(clip, transform.position, 1f, 0.04f);
+                return;
+            }
+
+            if (_audioSource != null)
+            {
+                _audioSource.PlayOneShot(clip);
+            }
         }
 
         protected Vector3 GetMuzzlePosition()

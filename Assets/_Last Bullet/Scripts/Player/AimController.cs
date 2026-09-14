@@ -5,8 +5,10 @@ namespace LastBullet
     public class AimController : MonoBehaviour
     {
         [Header("Auto-Aim Settings")]
-        [SerializeField] float _aimRadius = 10f;
-        [SerializeField] LayerMask _enemyLayer;
+        [SerializeField] private float _aimRadius = 10f;
+        [SerializeField] private LayerMask _enemyLayer;
+        [SerializeField] private Transform _rotationTarget;
+        [SerializeField] [Min(0f)] private float _rotationSpeed = 15f;
 
         private Transform _currentTarget;
 
@@ -21,13 +23,45 @@ namespace LastBullet
         {
             if (_currentTarget != null)
             {
-                Vector3 toTarget = _currentTarget.position - transform.position;
+                Transform aimOrigin = _rotationTarget != null ? _rotationTarget : transform;
+                Vector3 toTarget = _currentTarget.position - aimOrigin.position;
                 toTarget.y = 0f;
                 return toTarget.normalized;
             }
 
-            return transform.forward * 10f;
+            Transform aimTransform = _rotationTarget != null ? _rotationTarget : transform;
+            return aimTransform.forward;
         }
+
+        public void RotateTowardsCurrentTarget()
+        {
+            if (_currentTarget == null) return;
+
+            Transform rotationTarget = _rotationTarget != null ? _rotationTarget : transform;
+            Vector3 direction = _currentTarget.position - rotationTarget.position;
+            direction.y = 0f;
+
+            if (direction.sqrMagnitude <= 0.001f) return;
+
+            Quaternion targetRotation = Quaternion.LookRotation(direction.normalized);
+            rotationTarget.rotation = Quaternion.Slerp(
+                rotationTarget.rotation,
+                targetRotation,
+                _rotationSpeed * Time.deltaTime);
+        }
+
+            public void SnapTowardsCurrentTarget()
+            {
+                if (_currentTarget == null) return;
+
+                Transform rotationTarget = _rotationTarget != null ? _rotationTarget : transform;
+                Vector3 direction = _currentTarget.position - rotationTarget.position;
+                direction.y = 0f;
+
+                if (direction.sqrMagnitude <= 0.001f) return;
+
+                rotationTarget.rotation = Quaternion.LookRotation(direction.normalized);
+            }
 
         private Transform FindNearestEnemy()
         {
@@ -40,6 +74,9 @@ namespace LastBullet
 
             foreach (Collider hit in hits)
             {
+                if (hit == null) continue;
+                if (IsDeadTarget(hit)) continue;
+
                 float dist = Vector3.Distance(transform.position, hit.transform.position);
                 if (dist < nearestDist)
                 {
@@ -49,6 +86,12 @@ namespace LastBullet
             }
 
             return nearest;
+        }
+
+        private bool IsDeadTarget(Collider hitCollider)
+        {
+            ZombieAI zombie = hitCollider.GetComponentInParent<ZombieAI>();
+            return zombie != null && zombie.IsDead;
         }
 
         private void OnDrawGizmosSelected()

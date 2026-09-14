@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a9a1f5f7f6f4de4aab2e9d6a7c1b530, type: 3}
+  m_Name: Z001
+  m_EditorClassIdentifier: 
+  _maxHealth: 100
+  _moveSpeed: 2
+  _wanderSpeed: 1
+  _detectionRange: 10
+  _loseTargetRange: 15
+  _wanderRadius: 8
+  _wanderInterval: 3
+  _turnSpeed: 8
+  _attackRange: 1.5
+  _attackDamage: 10
+  _attackCooldown: 1.2
+  _attackDelay: 0.25
+  _attackAnimationDuration: 0.8
+  _hitStunDuration: 0.4
+  _targetTag: Player
+  _corpseLifetime: 3
+  _ragdollForceMultiplier: 1
+  _dissolveDuration: 1

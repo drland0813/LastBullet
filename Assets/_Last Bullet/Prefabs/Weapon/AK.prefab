@@ -338,8 +338,11 @@ MonoBehaviour:
   _equipLocalEulerAngles: {x: -7.733, y: -255.507, z: -246.35}
   _aimLocalPosition: {x: -0.006, y: 1.284, z: 0.382}
   _aimLocalEulerAngles: {x: 2.386, y: 2.4, z: 6.172}
-  _muzzlePoint: {fileID: 8096014318171175186}
-  _muzzleFlashVFX: {fileID: 0}
+  _muzzlePoint: {fileID: 4692734150610588797}
+  _muzzleFlashLocalEuler: {x: 0, y: -90, z: 0}
+  _muzzleFlashLocalPosition: {x: 0, y: 0, z: 0}
+  _muzzleFlashVFX: {fileID: 6763541349740309249, guid: b283de4d06c4372458b677fb75ad0239,
+    type: 3}
   _casingBullet: {fileID: 2385071193141495971}
   _leftHandPos: {fileID: 6944165057946729238}
   _rightHandPos: {fileID: 2526401748337627009}

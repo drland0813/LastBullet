@@ -9,6 +9,7 @@ namespace LastBullet
         bool CanFire { get; }
         bool IsReloading { get; }
         int CurrentAmmo { get; }
+        int ReserveAmmo { get; }
 
         void Fire(Vector3 origin, Vector3 direction);
         void ReleaseFire();

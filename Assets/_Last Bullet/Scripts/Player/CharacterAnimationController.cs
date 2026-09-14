@@ -17,14 +17,21 @@ namespace LastBullet
         [SerializeField] private Rig _weaponRig;
         [Header("Firing")]
         [SerializeField] private float _fireAnimationDuration = 0.25f;
+        [Header("Hit Animation")]
+        [SerializeField] private int _hitLayerIndex = 3;
+        [SerializeField] [Min(0.1f)] private float _hitAnimationTimeout = 2f;
         private static readonly int ParamWeaponType  = Animator.StringToHash("WeaponType");
         private static readonly int ParamIsFiring    = Animator.StringToHash("IsFiring");
+        private static readonly int ParamHit = Animator.StringToHash("Hit");
+        private static readonly int StateHeadHit = Animator.StringToHash("Hit Layer.Head Hit");
 
         [SerializeField] private WeaponController _weaponController;
+        [SerializeField] private bool _equipStartingWeaponOnStart = true;
         
         private bool _isArmed = false;
         private bool _fireSequenceActive;
         private Coroutine _fireSequenceCoroutine;
+        private Coroutine _hitAnimationCoroutine;
         private InputManager _inputManager;
 
         private void Awake()
@@ -33,9 +40,16 @@ namespace LastBullet
 
         private void Start()
         {
+            SetHitLayerWeight(0f);
             _weaponController.OnFireStarted += TriggerFire;
             _weaponController.OnFiringModeEnded += StopFireAnimation;
+            _weaponController.OnActiveSlotChanged += RefreshArmedVisuals;
             _inputManager = InputManager.Instance;
+
+            if (_equipStartingWeaponOnStart && !_weaponController.HasWeapon)
+            {
+                EquipWeapon(1, null);
+            }
         }
 
         private void OnDestroy()
@@ -44,6 +58,7 @@ namespace LastBullet
 
             _weaponController.OnFireStarted -= TriggerFire;
             _weaponController.OnFiringModeEnded -= StopFireAnimation;
+            _weaponController.OnActiveSlotChanged -= RefreshArmedVisuals;
         }
 
 
@@ -70,19 +85,45 @@ namespace LastBullet
             // StartCoroutine(FadeRigWeight(1f, 0.25f));
         }
 
+        public bool EquipWeaponById(string weaponId, int weaponType = 1)
+        {
+            if (_weaponController == null || string.IsNullOrEmpty(weaponId)) return false;
+            if (!_weaponController.EquipWeaponById(weaponId)) return false;
+
+            _isArmed = true;
+            _animator.SetInteger(ParamWeaponType, weaponType);
+
+            ApplyWeaponAnimationOverride();
+
+            StartCoroutine(FadeLayerWeight(1, 1f, 0.25f));
+            return true;
+        }
+
         public void UnequipWeapon()
         {
-            _isArmed = false;
             StopFireAnimation();
-            _animator.runtimeAnimatorController = _baseController;
-    
             _weaponController.UnequipCurrentWeapon();
             // Reset IK target
             // _leftHandTarget.SetParent(this.transform);
-    
-            StartCoroutine(FadeLayerWeight(1, 0f, 0.25f));
-            // StartCoroutine(FadeRigWeight(0f, 0.25f));
+
+            RefreshArmedVisuals();
             // _animator.SetInteger(ParamWeaponType, 0);
+        }
+
+        private void RefreshArmedVisuals()
+        {
+            if (_weaponController != null && _weaponController.CurrentWeapon != null)
+            {
+                _isArmed = true;
+                ApplyWeaponAnimationOverride();
+                StartCoroutine(FadeLayerWeight(1, 1f, 0.1f));
+            }
+            else
+            {
+                _isArmed = false;
+                _animator.runtimeAnimatorController = _baseController;
+                StartCoroutine(FadeLayerWeight(1, 0f, 0.25f));
+            }
         }
 
         private void ApplyWeaponAnimationOverride()
@@ -112,6 +153,50 @@ namespace LastBullet
             if (_fireSequenceActive) return;
 
             _fireSequenceCoroutine = StartCoroutine(FireSequence());
+        }
+
+        public void PlayHitAnimation()
+        {
+            if (_animator == null) return;
+
+            SetHitLayerWeight(1f);
+            _animator.SetTrigger(ParamHit);
+
+            if (_hitAnimationCoroutine != null)
+            {
+                StopCoroutine(_hitAnimationCoroutine);
+            }
+
+            _animator.Play(StateHeadHit, _hitLayerIndex, 0f);
+            _hitAnimationCoroutine = StartCoroutine(DisableHitLayer());
+        }
+
+        private IEnumerator DisableHitLayer()
+        {
+            float timeout = Time.time + _hitAnimationTimeout;
+
+            yield return null;
+
+            while (Time.time < timeout)
+            {
+                AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(_hitLayerIndex);
+                if (stateInfo.fullPathHash == StateHeadHit && stateInfo.normalizedTime >= 1f)
+                {
+                    break;
+                }
+
+                yield return null;
+            }
+
+            SetHitLayerWeight(0f);
+            _hitAnimationCoroutine = null;
+        }
+
+        private void SetHitLayerWeight(float weight)
+        {
+            if (_animator.layerCount <= _hitLayerIndex) return;
+
+            _animator.SetLayerWeight(_hitLayerIndex, weight);
         }
 
         private IEnumerator FireSequence()

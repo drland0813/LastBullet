@@ -4,12 +4,12 @@ namespace LastBullet
 {
     public class BulletProjectile : ProjectileBase
     {
-        protected override void OnHit(Collider other)
+        protected override void OnHit(Collider other, HitData hit)
         {
-            IDamageable damageable = other.GetComponent<IDamageable>();
+            IDamageable damageable = other.GetComponentInParent<IDamageable>();
             if (damageable != null)
             {
-                damageable.TakeDamage(_damage, gameObject);
+                damageable.TakeDamage(hit);
             }
         }
     }

@@ -24,6 +24,9 @@ namespace LastBullet
 		public float RotationSmoothTime = 0.12f;
 		[Tooltip("Acceleration and deceleration")]
 		public float SpeedChangeRate = 10.0f;
+		[Tooltip("Joystick magnitude below this is treated as rest. Must match the move threshold on the weapon controller.")]
+		[Min(0f)]
+		public float MoveDeadzone = 0.15f;
 
 		[Space(10)]
 		[Tooltip("The height the player can jump")]
@@ -86,6 +89,12 @@ namespace LastBullet
 		private CharacterController _controller;
 		private PlayerInputs _input;
 		private GameObject _mainCamera;
+		private PlayerHealth _health;
+		private WeaponController _weaponController;
+
+		private bool IsMovementLocked => _health != null && _health.IsMovementLocked;
+		private bool IsArmed => _weaponController != null && _weaponController.HasWeapon;
+		private bool IsFiringStance => _weaponController != null && _weaponController.IsFiringMode;
 
 		private const float _threshold = 0.01f;
 
@@ -105,6 +114,16 @@ namespace LastBullet
 			_hasAnimator = TryGetComponent(out _animator);
 			_controller = GetComponent<CharacterController>();
 			_input = GetComponent<PlayerInputs>();
+			_health = GetComponent<PlayerHealth>();
+			if (_health == null)
+			{
+				_health = GetComponentInParent<PlayerHealth>();
+			}
+			if (_health == null)
+			{
+				_health = GetComponentInChildren<PlayerHealth>(true);
+			}
+			_weaponController = GetComponentInChildren<WeaponController>(true);
 
 			AssignAnimationIDs();
 
@@ -168,7 +187,29 @@ namespace LastBullet
 
 		private void Move()
 		{
-			if (_input.fire)
+			if (_controller == null || !_controller.enabled) return;
+
+			Vector2 moveInput = _input != null ? _input.move : Vector2.zero;
+			if (moveInput.magnitude < MoveDeadzone)
+			{
+				moveInput = Vector2.zero;
+			}
+
+			if (IsMovementLocked)
+			{
+				_speed = 0.0f;
+				_animationBlend = Mathf.Lerp(_animationBlend, 0.0f, Time.deltaTime * SpeedChangeRate);
+				if (_hasAnimator)
+				{
+					_animator.SetFloat(_animIDSpeed, _animationBlend);
+					_animator.SetFloat(_animIDMotionSpeed, 0.0f);
+				}
+
+				_controller.Move(new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+				return;
+			}
+
+			if ((_input.fire || IsFiringStance) && IsArmed)
 			{
 				_speed = 0.0f;
 				_animationBlend = Mathf.Lerp(_animationBlend, 0.0f, Time.deltaTime * SpeedChangeRate);
@@ -189,13 +230,13 @@ namespace LastBullet
 
 			// note: Vector2's == operator uses approximation so is not floating point error prone, and is cheaper than magnitude
 			// if there is no input, set the target speed to 0
-			if (_input.move == Vector2.zero) targetSpeed = 0.0f;
+			if (moveInput == Vector2.zero) targetSpeed = 0.0f;
 
 			// a reference to the players current horizontal velocity
 			float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
 
 			float speedOffset = 0.1f;
-			float inputMagnitude = _input.analogMovement ? _input.move.magnitude : 1f;
+			float inputMagnitude = _input.analogMovement ? moveInput.magnitude : 1f;
 
 			// accelerate or decelerate to target speed
 			if (currentHorizontalSpeed < targetSpeed - speedOffset || currentHorizontalSpeed > targetSpeed + speedOffset)
@@ -214,11 +255,11 @@ namespace LastBullet
 			_animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, Time.deltaTime * SpeedChangeRate);
 
 			// normalise input direction
-			Vector3 inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
+			Vector3 inputDirection = new Vector3(moveInput.x, 0.0f, moveInput.y).normalized;
 
 			// note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
 			// if there is a move input rotate player when the player is moving
-			if (_input.move != Vector2.zero)
+			if (moveInput != Vector2.zero)
 			{
 				_targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
 				float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity, RotationSmoothTime);
@@ -243,6 +284,11 @@ namespace LastBullet
 
 		private void JumpAndGravity()
 		{
+			if (IsMovementLocked && _input != null)
+			{
+				_input.jump = false;
+			}
+
 			if (Grounded)
 			{
 				// reset the fall timeout timer

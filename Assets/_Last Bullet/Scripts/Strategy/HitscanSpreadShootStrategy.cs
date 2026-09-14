@@ -17,11 +17,12 @@ namespace LastBullet
                             GameObject instigator)
         {
             float damagePerPellet = data.Damage / _pelletCount;
+            float forcePerPellet = data.HitForce / _pelletCount;
 
             for (int i = 0; i < _pelletCount; i++)
             {
                 Vector3 pelletDirection = ApplySpread(direction, _spreadAngle);
-                FireRay(origin, pelletDirection, data, damagePerPellet, instigator);
+                FireRay(origin, pelletDirection, data, damagePerPellet, forcePerPellet, instigator);
             }
         }
     }

@@ -14,17 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Id: G001
   Name: Gun001
-  Icon: {fileID: 0}
-  Damage: 10
+  Icon: {fileID: 21300000, guid: 72eae29456c7ef14fa8883ce9e4f5c09, type: 3}
+  Damage: 20
   FireRate: 1
   MagazineSize: 15
+  TotalAmmo: 100
   Range: 10
   MuzzleFlashPrefab: {fileID: 100006, guid: b85a6b62efd46f247926d8401b3b5742, type: 3}
   HitImpactPrefab: {fileID: 100002, guid: 399d10d553e79044d8256a827301b56f, type: 3}
-  FireSound: {fileID: 0}
+  FireSound: {fileID: 8300000, guid: 0e5ec5d798406aa4699be8c44dd7599f, type: 3}
   ReloadSound: {fileID: 0}
   EmptySound: {fileID: 0}
   RecoilImpulseForce: 1
+  HitForce: 25
   BulletPrefab: {fileID: 3419403611308626410, guid: fb80f0f88f9efd54bb43d2aa042921ba,
     type: 3}
   BulletSpeed: 20

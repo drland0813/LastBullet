@@ -239,7 +239,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.006, y: 0.409, z: 0.508}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 4.567736, y: 4.567736, z: 4.567736}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1644046679661782882}
@@ -457,8 +457,11 @@ MonoBehaviour:
   _equipLocalEulerAngles: {x: 9.656, y: 87.346, z: 103.68}
   _aimLocalPosition: {x: 0.038, y: 1.553, z: 0.657}
   _aimLocalEulerAngles: {x: 0, y: 0, z: 0}
-  _muzzlePoint: {fileID: 1644046679661782882}
-  _muzzleFlashVFX: {fileID: 0}
+  _muzzlePoint: {fileID: 2800232918507384964}
+  _muzzleFlashLocalEuler: {x: 0, y: -82.504, z: 0}
+  _muzzleFlashLocalPosition: {x: -0.004, y: 0.0000003874302, z: -0.027}
+  _muzzleFlashVFX: {fileID: 6763541349740309249, guid: b283de4d06c4372458b677fb75ad0239,
+    type: 3}
   _casingBullet: {fileID: 3058826150791192806}
   _leftHandPos: {fileID: 167985670830960711}
   _rightHandPos: {fileID: 2524337558401125387}

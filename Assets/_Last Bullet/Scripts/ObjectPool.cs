@@ -5,11 +5,18 @@ using UnityEngine;
 public class ObjectPool<T> where T : Component
 {
     T _sample;
+    Transform _root;
     List<T> _poolElements = new List<T>();
 
     public ObjectPool(T element)
     {
         _sample = element;
+    }
+
+    public ObjectPool(T element, Transform root)
+    {
+        _sample = element;
+        _root = root;
     }
 
     public T Get()
@@ -24,22 +31,46 @@ public class ObjectPool<T> where T : Component
 
     private T GetElement(bool activate)
     {
-        if (_poolElements.Count == 0)
+        while (_poolElements.Count > 0)
         {
-            T newElement = Object.Instantiate(_sample, _sample.transform.parent);
-            newElement.gameObject.SetActive(activate);
-            return newElement;
+            T element = _poolElements[0];
+            _poolElements.RemoveAt(0);
+            if (element == null) continue;
+            // Reparent here (safe context). Never reparent inside
+            // OnEnable/OnDisable: Unity forbids SetParent during activation.
+            if (_root != null)
+            {
+                element.transform.SetParent(_root, false);
+            }
+            element.gameObject.SetActive(activate);
+            return element;
         }
 
-        T element = _poolElements[0];
-        _poolElements.RemoveAt(0);
-        element.gameObject.SetActive(activate);
-        return element;
+        if (_sample == null)
+        {
+            Debug.LogError("[ObjectPool] Sample is missing or destroyed. Cannot create new elements.");
+            return default;
+        }
+
+        Transform parent = _root != null ? _root : _sample.transform.parent;
+        T newElement = Object.Instantiate(_sample, parent);
+        newElement.gameObject.SetActive(activate);
+        return newElement;
     }
 
     public void Store(T element)
     {
-        element.gameObject.SetActive(false);
+        Store(element, true);
+    }
+
+    public void Store(T element, bool deactivate)
+    {
+        if (element == null) return;
+        if (_poolElements.Contains(element)) return;
+        if (deactivate)
+        {
+            element.gameObject.SetActive(false);
+        }
         _poolElements.Add(element);
     }
 }

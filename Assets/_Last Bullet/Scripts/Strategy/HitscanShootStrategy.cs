@@ -7,11 +7,11 @@ namespace LastBullet
                             GameObject instigator)
         {
             Vector3 aimedDirection = ApplySpread(direction, data.Spread);
-            FireRay(origin, aimedDirection, data, data.Damage, instigator);
+            FireRay(origin, aimedDirection, data, data.Damage, data.HitForce, instigator);
         }
 
         protected void FireRay(Vector3 origin, Vector3 direction, GunDataSO data,
-                               float damage, GameObject instigator)
+                               float damage, float hitForce, GameObject instigator)
         {
             Vector3 endPoint = origin + direction * data.Range;
             Collider hitCollider = null;
@@ -23,6 +23,7 @@ namespace LastBullet
             {
                 if (hit.collider == null) continue;
                 if (IsPartOfInstigator(hit.collider, instigator)) continue;
+                if (hit.collider.GetComponentInParent<PickupItem>() != null) continue;
 
                 hitCollider = hit.collider;
                 endPoint = hit.point;
@@ -31,16 +32,34 @@ namespace LastBullet
 
             if (hitCollider != null)
             {
-                IDamageable damageable = hitCollider.GetComponent<IDamageable>();
+                IDamageable damageable = hitCollider.GetComponentInParent<IDamageable>();
                 if (damageable != null)
                 {
-                    damageable.TakeDamage(damage, instigator);
+                    damageable.TakeDamage(new HitData
+                    {
+                        Amount = damage,
+                        Instigator = instigator,
+                        Point = endPoint,
+                        Direction = direction,
+                        Force = hitForce
+                    });
                 }
 
-                SpawnHitImpact(data.HitImpactPrefab, endPoint);
+                SpawnHitImpact(ResolveImpactPrefab(hitCollider, data.HitImpactPrefab), endPoint);
             }
 
             SpawnTracer(data.TracerPrefab, origin, endPoint, data.TracerLifetime);
+        }
+
+        private GameObject ResolveImpactPrefab(Collider hitCollider, GameObject defaultPrefab)
+        {
+            ZombieAI zombie = hitCollider.GetComponentInParent<ZombieAI>();
+            if (zombie != null && zombie.TryGetBloodImpact(out GameObject bloodPrefab))
+            {
+                return bloodPrefab;
+            }
+
+            return defaultPrefab;
         }
 
         protected Vector3 ApplySpread(Vector3 direction, float spread)

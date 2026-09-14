@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/_Last Bullet/Scenes/MainMenu.unity
+    guid: 36f69e8194fb92c4a98d38c033e60a26
+  - enabled: 1
+    path: Assets/_Last Bullet/Scenes/Loading.unity
+    guid: f6127db0e67a8ac408cade559b2da1e0
+  - enabled: 1
     path: Assets/_Last Bullet/Scenes/Gameplay.unity
     guid: 4fc1f5fdce7ee2e4dbd7bb73c6e22c85
   m_configObjects:

@@ -8,10 +8,12 @@ namespace LastBullet
     {
         protected float _speed = 10;
         protected float _damage = 10;
+        protected float _hitForce = 10f;
         protected float _lifetime = 1;
         protected Vector3 _direction;
         protected GameObject _hitImpactPrefab;
         protected ObjectPool<BulletProjectile> _pool;
+        protected GameObject _instigator;
 
         private Rigidbody _rigidbody;
         private float _timer;
@@ -29,8 +31,8 @@ namespace LastBullet
         }
 
         public virtual void Launch(Vector3 origin, Vector3 direction, float speed,
-                                   float damage, float lifetime, GameObject hitImpactPrefab,
-                                   ObjectPool<BulletProjectile> pool)
+                                   float damage, float hitForce, float lifetime, GameObject hitImpactPrefab,
+                                   ObjectPool<BulletProjectile> pool, GameObject instigator)
         {
             transform.position = origin;
             transform.rotation = Quaternion.LookRotation(direction);
@@ -38,9 +40,11 @@ namespace LastBullet
             _direction = direction.normalized;
             _speed = speed;
             _damage = damage;
+            _hitForce = hitForce;
             _lifetime = lifetime;
             _hitImpactPrefab = hitImpactPrefab;
             _pool = pool;
+            _instigator = instigator;
             _timer = 0f;
             _isActive = true;
 
@@ -63,17 +67,29 @@ namespace LastBullet
         protected virtual void OnTriggerEnter(Collider other)
         {
             if (!_isActive) return;
+            if (other.GetComponentInParent<PickupItem>() != null) return;
 
-            OnHit(other);
+            Vector3 hitPoint = other.ClosestPoint(transform.position);
+            HitData hit = new HitData
+            {
+                Amount = _damage,
+                Instigator = _instigator,
+                Point = hitPoint,
+                Direction = _direction,
+                Force = _hitForce
+            };
+
+            OnHit(other, hit);
             SpawnHitImpact(other);
             ReturnToPool();
         }
 
-        protected abstract void OnHit(Collider other);
+        protected abstract void OnHit(Collider other, HitData hit);
 
         protected void SpawnHitImpact(Collider other)
         {
-            if (_hitImpactPrefab == null) return;
+            GameObject impactPrefab = ResolveImpactPrefab(other);
+            if (impactPrefab == null) return;
 
             Vector3 hitPoint = other.ClosestPoint(transform.position);
             Vector3 hitNormal = (transform.position - hitPoint).normalized;
@@ -83,9 +99,20 @@ namespace LastBullet
                 hitNormal = -_direction;
             }
 
-            GameObject impact = Instantiate(_hitImpactPrefab, hitPoint,
+            GameObject impact = Instantiate(impactPrefab, hitPoint,
                                                    Quaternion.LookRotation(hitNormal));
             Destroy(impact, 2f);
+        }
+
+        private GameObject ResolveImpactPrefab(Collider other)
+        {
+            ZombieAI zombie = other.GetComponentInParent<ZombieAI>();
+            if (zombie != null && zombie.TryGetBloodImpact(out GameObject bloodPrefab))
+            {
+                return bloodPrefab;
+            }
+
+            return _hitImpactPrefab;
         }
 
         protected virtual void ReturnToPool()

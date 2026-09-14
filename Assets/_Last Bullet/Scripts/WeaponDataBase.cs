@@ -13,6 +13,8 @@ namespace LastBullet
         public float Damage;
         public float FireRate;
         public int MagazineSize;
+        [Tooltip("Total bullets carried including the loaded magazine. 0 reloads when depleted.")]
+        public int TotalAmmo = 100;
         public float Range;
 
         [Header("FX")]
@@ -26,6 +28,10 @@ namespace LastBullet
 
         [Header("Recoil")]
         public float RecoilImpulseForce;
+
+        [Header("Hit Reaction")]
+        [Tooltip("Impulse applied to ragdoll on hit/kill. Per-weapon tuning.")]
+        public float HitForce = 10f;
     }
 }
 
